@@ -1,2 +1,4 @@
 hello world
 dette blir en konflikt
+
+Linje i bunnen
