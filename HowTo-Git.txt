@@ -1,0 +1,11 @@
+Forutsettet at du har cd-et inn til mappen hvor gitrepoet er lagret
+
+1. git add [Filnavn] 
+						eventuelt * for å ta med alle filene som er endret, eller "git rm [filnavn]" for å slette en fil fra repoet
+2. git commit -m "melding som beskriver endringene som er gjort"
+3. git pull
+4. løs eventuelle konflikter i en teksteditor
+5. git push
+
+Hvis du bare trenger å hente endringene som er gjort, men ikke skal pushe noe slev
+1. git pull
