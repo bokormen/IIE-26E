@@ -1,2 +1,4 @@
+dette blir en konflikt dette og
+
 hello world
 dette blir en konflikt
