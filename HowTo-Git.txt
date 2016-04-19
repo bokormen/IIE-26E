@@ -1,7 +1,10 @@
 Forutsettet at du har cd-et inn til mappen hvor gitrepoet er lagret
 
-1. git add [Filnavn] 
-						eventuelt * for å ta med alle filene som er endret, eller "git rm [filnavn]" for å slette en fil fra repoet
+1. Under trinn 1 er det flere muligheter, alt ettersom hva du ønsker å gjøre
+	a. git add [Filnavn] for å te med en spesifikk fil som er endret
+	b. git add * for å ta med alle filene som er endret, 
+	c. git rm [filnavn] for å slette en fil fra repoet
+	d. git add [Filnavn1] [Filnavn2] [Filnavn3] ... for å legge til flere spesifikke filer i en commit
 2. git commit -m "melding som beskriver endringene som er gjort"
 3. git pull
 4. løs eventuelle konflikter i en teksteditor
