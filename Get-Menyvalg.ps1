@@ -13,7 +13,7 @@ function Get-Menyvalg() {
     $gyldigIntValg = $true
     
     do {
-        while (![bool]($valg -as [int] -is [int]) -or !$gyldigIntValg) {
+        while (![bool]($valg -as [int] -is [int]) -or !$gyldigIntValg -or $valg -eq "") {
             $i=0
             Foreach($mulighet in $menyvalg) {
                 Write-Host $i ": " $mulighet
