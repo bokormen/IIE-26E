@@ -2,6 +2,8 @@ function Get-Hovedmeny() {
     
     param([string]$fremtidigeValg,[string]$valgGjort)
 
+    clear
+
     [bool]$isRetteParametere = $true
     
     $menyElementer = @("valg1","valg2","valg3","valg4","Tilbake","Til hovedmeny", "Avslutt")
@@ -13,14 +15,18 @@ function Get-Hovedmeny() {
     $fremtidigeValgSplittet = $fremtidigeValg -split ","
     $valgGjortSplittet = $valgGjort -split ","
 
+    Write-Host "fremtidsvalg " $fremtidigeValgSplittet -ForegroundColor Cyan
+    Write-Host "valg gjort " $valgGjortSplittet -ForegroundColor DarkCyan
+
     foreach ($int in $fremtidigeValgSplittet) {
-        if(![bool]($int -as [int] -is [int])) {
+        Write-Host "int: $int | Count" $fremtidigeValgSplittet.Count -ForegroundColor Gray
+        if((![bool]($int -as [int] -is [int])) -or (($int -eq "") -and ($fremtidigeValgSplittet.Count -gt 1))) {
             $isRetteParametere = $false
         }
     }
 
     foreach ($int in $valgGjortSplittet) {
-        if(![bool]($int -as [int] -is [int])) {
+        if((![bool]($int -as [int] -is [int])) -or (($int -eq "") -and ($valgGjortSplittet.Count -gt 1))) {
             $isRetteParametere = $false
         }
     }
@@ -39,56 +45,87 @@ function Get-Hovedmeny() {
         
         $valg = [int]$fremtidigeMenyValg[0]
         
-        if($fremtidigeMenyValg.Length -gt 1) {
+        if($fremtidigeMenyValg.Count -gt 1) {
             
             $fremtidigeValg = ""
 
-            for ($i=1;$i -lt ($fremtidigeMenyValg.Count - 1) ; $i++) {
-                $fremtidigeValg += [string]$fremtidigeMenyValg[$i]
-                $fremtidigeValg += ","
-            }
+            if ($fremtidigeMenyValg.Count -eq 2) {
+               $fremtidigeValg = [string]$fremtidigeMenyValg[1]
+            } else {
 
-            $fremtidigeValg += $fremtidigeMenyValg[-1]
+                for ($i=($fremtidigeMenyValg.Count-1);$i -gt 1;$i--) {
+                    $fremtidigeValg =  "," + [string]$fremtidigeMenyValg[$i]+ $fremtidigeValg
+                }
+
+                $fremtidigeValg = [string]$fremtidigeMenyValg[1] + $fremtidigeValg
+            }
 
         } else {
             $fremtidigeValg = ""
         }
     }
 
-    if ($valgGjort -ge 1) {
-        $valgGjort += ","
-        $valgGjort += [string]$valg
+    Write-Host "valg gjort: "$valgGjort -ForegroundColor Yellow
+
+    if ($valgGjort.Length -ge 1) {
+        $valgGjort = $valgGjort + "," + [string]$valg
+        write-host "valg gjort " $valgGjort -ForegroundColor DarkGreen
     } else {
         $valgGjort = [string]$valg
+        write-host "valg gjort " $valgGjort -ForegroundColor Magenta
     }
+    pause
 
     switch ([int]$valg) {
+        0 {
+            Write-Host "valg 0"
+            Get-Hovedmeny "$fremtidigeValg" "$valgGjort"
+        }
         1 {
             Write-Host "valg 1"
-            Get-Hovedmeny $fremtidigeValg $valgGjort
+            Get-Hovedmeny "$fremtidigeValg" "$valgGjort"
         }
         2 {
             Write-Host "valg 2"
-            Get-Hovedmeny $fremtidigeValg $valgGjort
+            Get-Hovedmeny "$fremtidigeValg" "$valgGjort"
         }
         3{
             Write-Host "valg 3"
-            Get-Hovedmeny $fremtidigeValg $valgGjort
+            Get-Hovedmeny "$fremtidigeValg" "$valgGjort"
         }
         4{ #Dette er Tilbake valget, og grunnen til at funksjonen kan ta inn to variabler
             Write-Host "valg 4"
             if ($valgGjort.Length -gt 1) {
+                write-host "valg gjort: " $valgGjort -ForegroundColor Green
                 $fremtidigeValg = ""
                 $fremtidigeMenyValg = $valgGjort -split ","
-                if ($fremtidigeMenyValg.Count -gt 2) {
-                    $i=0
-                    for($i=0;$i -lt ($fremtidigeMenyValg.Count-3);$i++) {
-                        $fremtidigeValg += $fremtidigeMenyValg[$i]
-                        $fremtidigeValg += ","
+
+                if($fremtidigeMenyValg.Count -gt 2) {
+            
+                $fremtidigeValg = ""
+
+                if ($fremtidigeMenyValg.Count -eq 3) {
+                   $fremtidigeValg = [string]$fremtidigeMenyValg[0]
+                } else {
+
+                    for ($i=($fremtidigeMenyValg.Count-3);$i -gt 0;$i--) {
+                        $fremtidigeValg =  "," + [string]$fremtidigeMenyValg[$i] + $fremtidigeValg
                     }
-                    $fremtidigeValg += $fremtidigeMenyValg[$i++]
+
+                    $fremtidigeValg = [string]$fremtidigeMenyValg[0] + $fremtidigeValg
                 }
-                Get-Hovedmeny $fremtidigeValg ""
+
+            }
+
+                <#if ($fremtidigeMenyValg.Count -gt 2) {
+                    for($i=0;$i -lt ($fremtidigeMenyValg.Count-3);$i++) {
+                        $fremtidigeValg = "," + $fremtidigeMenyValg[$i] + $fremtidigeValg
+                    }
+                    $fremtidigeValg = [string]$fremtidigeMenyValg[$i++] + $fremtidigeValg
+                }#>
+                write-host "fermtidige valg: " $fremtidigeValg -ForegroundColor Green
+                pause
+                Get-Hovedmeny "$fremtidigeValg" ""
                 
             } else {
                 Get-Hovedmeny
@@ -102,7 +139,15 @@ function Get-Hovedmeny() {
             Clear
         }
         default {
-            Write-Host "valg default"
+            
+            Write-Host "$valg er ikke et alternativ i denne menyen, returnerer til hovedmenyen" -ForegroundColor Red
+            $i = 0
+            Foreach($element in $menyElementer) {
+                Write-Host $i ": " $element -ForegroundColor Yellow
+                $i++
+            }
+            Pause
+
             Get-Hovedmeny
         }
     }
