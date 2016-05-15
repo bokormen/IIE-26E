@@ -1,3 +1,3 @@
 ﻿function Delete-Brukerkonto() {
-    
+        
 }
