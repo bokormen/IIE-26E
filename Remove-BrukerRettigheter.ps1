@@ -120,6 +120,7 @@ function Remove-Brukerrettigheter() {
         Write-Host "    - $rettighet"
     }
     Pause
+    Clear-Host
 
     #Set-Mailbox -Identity $konto -GrantSendOnBehalfTo {Remove="$bruker"}
     #Remove-MailboxPermission -Identity $kontoNavn -User $bruker -AccessRights 'FullAccess' -InheritanceType 'All'
