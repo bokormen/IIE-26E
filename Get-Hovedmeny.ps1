@@ -89,11 +89,11 @@ function Get-Hovedmeny() {
             Write-Host "valg 2"
             Get-Hovedmeny "$fremtidigeValg" "$valgGjort"
         }
-        3{
+        3 {
             Write-Host "valg 3"
             Get-Hovedmeny "$fremtidigeValg" "$valgGjort"
         }
-        4{ #Dette er Tilbake valget, og grunnen til at funksjonen kan ta inn to variabler
+        4 { #Dette er Tilbake valget, og grunnen til at funksjonen kan ta inn to variabler
             Write-Host "valg 4"
             if ($valgGjort.Length -gt 1) {
                 write-host "valg gjort: " $valgGjort -ForegroundColor Green
@@ -135,8 +135,9 @@ function Get-Hovedmeny() {
             Write-Host "valg 5"
             Get-Hovedmeny
         }
-        6{
-            Clear
+        6 {
+            Clear-Host
+            Break exchangeAdministrasjon
         }
         default {
             

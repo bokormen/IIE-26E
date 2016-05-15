@@ -22,7 +22,7 @@ function Get-ListeOverGitteBrukerrettigher() {
     $ResultatMailboxPermission = [System.Collections.ArrayList]$ResultatMailboxPermission.Split(", ",[System.StringSplitOptions]::RemoveEmptyEntries)
 
     if($ResultatMailboxPermission.Contains("FullAccess")) {
-        $Resultat.Add("FullAccess")  | Out-Null
+        $Resultat.Add("FullAccess")  | Out-Null # Out-Null sørger for at utskriften fra denne kommandoen ikke blir en del av returverdien fra funksjonen
     }
 
     
@@ -30,18 +30,20 @@ function Get-ListeOverGitteBrukerrettigher() {
     # Denne bolken sjekker om brukeren har tilgangen Send-As,
     # Utskriften fra funksjonen som sjekker for rettigheten behandles slik at vi sitter igjen med bare rettighetene brukeren har til e-postkontoen
     #>
-    $ResultatSendAs = Get-Mailbox -Identity $bruker | Get-ADPermission -User $epostkonto | where {($_.ExtendedRights -like “*Send-As*”)} | Select-Object ExtendedRights | Format-Table -HideTableHeaders | Out-String
+    $ResultatSendAs = Get-Mailbox -Identity $epostkonto | Get-ADPermission -User $bruker | where {($_.ExtendedRights -like “*Send-As*”)} | Select-Object ExtendedRights | Format-Table -HideTableHeaders | Out-String
     
-    $ResultatSendAs = $ResultatSendAs.Replace('{','').Replace('}','').Replace("`n","").Replace("`r","")
+    $ResultatSendAs = $ResultatSendAs.Replace('{','').Replace('}','').Replace("`n","").Replace("`r","").trim()
 
-    $Resultat.Add($ResultatSendAs) | Out-Null
+    if($ResultatSendAs -ne "") {
+        $Resultat.Add("SendAs") | Out-Null
+    }
 
 
     <#
     # Denne bolken sjekker om brukeren har tilgangen SendOnBehalfOf,
     # Utskriften fra funksjonen som sjekker for rettigheten behandles slik at vi sitter igjen med bare rettighetene brukeren har til e-postkontoen
     #>
-    $ResultatSendOnBehalf = Get-Mailbox -resultsize unlimited | Where {($_.GrantSendOnBehalfTo -ne $null) -and ([string]$_.Alias -eq $bruker)} | Select-Object GrantSendOnBehalfTo | Format-Table -HideTableHeaders -Wrap | Out-String
+    $ResultatSendOnBehalf = Get-Mailbox -resultsize unlimited | Where {($_.GrantSendOnBehalfTo -ne $null) -and ([string]$_.Alias -eq $epostkonto)} | Select-Object GrantSendOnBehalfTo | Format-Table -HideTableHeaders -Wrap | Out-String
     
     $ResultatSendOnBehalf = $ResultatSendOnBehalf.Replace('{','').Replace('}','').Replace("`n","").Replace("`r","")
 
@@ -50,7 +52,7 @@ function Get-ListeOverGitteBrukerrettigher() {
     foreach ($element in $ResultatSendOnBehalf) {
         $temp = Get-Mailbox $element.trim() | Select Alias | Format-Table -HideTableHeaders | Out-String
 
-        if ($temp.trim() -eq $epostkonto) {
+        if ($temp.trim() -eq $bruker) {
             $Resultat.Add("SendOnBehalfOf") | Out-Null # Out-Null sørger for at utskriften fra denne kommandoen ikke blir en del av returverdien fra funksjonen
         }
     }
