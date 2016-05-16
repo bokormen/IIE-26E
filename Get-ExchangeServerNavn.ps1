@@ -26,8 +26,15 @@ Function Get-ExchangeServerInSite {
 function Get-ExchangeServerNavn() {
     $exchangeServer = ""
     if ((gwmi win32_computersystem).partofdomain -eq $true) {
-        $exchangeServer = Get-ExchangeServerInSite | select -first 1 | Select FQDN | Format-Table -HideTableHeaders -AutoSize -Wrap | Out-String
-        $exchangeServer = $exchangeServer.Replace("`n","").Replace("`r","").Trim()
+        $exchangeServer = (Get-ExchangeServerInSite | select -first 1 | Select FQDN | Format-Table -HideTableHeaders -AutoSize -Wrap | Out-String).Replace("`n","").Replace("`r","").Trim()
     }
     return $exchangeServer
+}
+
+function Get-DomeneKontrollerNavn() {
+    $domeneKontroller = ""
+    if ((gwmi win32_computersystem).partofdomain -eq $true) {
+        $domeneKontroller = ([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().DomainControllers | select Name | Select -First 1 | Format-Table -HideTableHeaders -AutoSize -Wrap | Out-String).Replace("`n","").Replace("`r","").Trim()
+    }
+    Return $domeneKontroller
 }

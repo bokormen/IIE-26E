@@ -27,6 +27,9 @@ function Get-Epostkonto() {
             if($bruker -eq "") {
                 $oenskerAaFortsette = Read-Host "Du ser ut til å ha gjort noen forsøk uten å lykkes, ønsker du å forsette? [y/n]"
                 $oenskerAaFortsette = $oenskerAaFortsette.ToLower().Trim()
+                if ($oenskerAaFortsette -ne "y") {
+                    Break fortsettAdministrering
+                }
             }
 
         } while($bruker -eq "" -and $oenskerAaFortsette -eq "y")

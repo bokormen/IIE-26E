@@ -50,16 +50,18 @@ do{
                 
                 if($_.Mail -ne ""){ 
                     #Legger en bruker til distubusjonsgruppa 
-                    Add-DistributionGroupMember -Identity $Navn -Member $_.samaccountname -ErrorVariable err -ErrorAction SilentlyContinue 
-                    $errStoerelse = $err.length
+                    Add-DistributionGroupMember -Identity $Navn -Member $_.samaccountname <#-ErrorVariable err #>-ErrorAction SilentlyContinue
+                    $scriptblock = [scriptblock]::Create("(Get-DistributionGroupMember -Identity `"$Navn`" | Where-Object{`$_.Alias -eq `"$_.samAccountName`"} | select samAccountName | Format-Table -HideTableHeaders | out-string).Trim()")
+                    $sjekkResultat = Invoke-Command -ScriptBlock $scriptblock
                 }                  
-                if($errStoerelse -ne 0){ 
+                if($sjekkResultat -eq ""){
                     $utskriftBruker += $_.SamAccountName + "`n" 
+                    $errStoerelse++ | Out-Null
                 } 
             } 
             Write-Host "Velykket opperasjon" -ForegroundColor Green             
             write-host "-------------------`n"             
-            if($errStoerelse-ne 0) { 
+            if($errStoerelse -ne 0) { 
                 Write-Host "Brukere som feilet`n"                 
                 write-Host $utskriftBruker 
             } 

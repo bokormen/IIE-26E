@@ -1,9 +1,8 @@
 ﻿#Funksjonen lar deg velge mellom å sende på vegne av eller sette tilgang til en delt postboks 
 function Set-Rettigheter{ 
     #Param er der slik at en har mulighet til å sende over navnet på den delte eposten.     
-    param( 
-        [Parameter(Mandatory=$false)] 
-        $navn         )     do{ 
+    param([Parameter(Mandatory=$false)]$navn)     
+	do{ 
         $RettighetMeny = Read-Host "`n1:Sende på vegne av`n2:Sett tilgang til delt postboks`n3:Avslutt`n" 
         #Sjekker om $navn har innhold         
         if($navn -eq $null -or $navn -eq ""){             

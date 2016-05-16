@@ -6,7 +6,15 @@ function Start-RemoteExchangeSession() {
 
     $SessionOpt = New-PSSessionOption -SkipCACheck:$true -SkipCNCheck:$true -SkipRevocationCheck:$true
 
-    $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://158.38.56.180/Powershell/ -Credential $UserCredentials -AllowRedirection -SessionOption $SessionOpt -Authentication Basic
+    $Session1 = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://158.38.56.180/Powershell/ -Credential $UserCredentials -AllowRedirection -SessionOption $SessionOpt -Authentication Basic
 
-    Import-PSSession $Session
+    $Port = "903" #Default port
+
+    $Session2 = New-PSSession -ComputerName 158.38.56.180 -Port $Port -Credential $UserCredentials
+
+    Invoke-Command -Session $Session2 {Import-Module -Name ActiveDirectory}
+
+    Import-PSSession $Session1
+
+    Import-PSSession $Session2 -Module ActiveDirectory
 }

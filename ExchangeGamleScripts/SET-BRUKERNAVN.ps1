@@ -1,7 +1,7 @@
 ﻿#Funksjonen tar inn fornavn og etternavn og lager et brukernavn ut av de første 3 bokstavene i hver.
 function Set-Brukernavn($fornavn, $etternavn) {
-    #Setter midlertidig variabelen til $null slik at den ikke inneholder noe fra tidligere.
-    $MidlertidigBrukernavn = $null
+    #Setter midlertidig variabelen til "" slik at den ikke inneholder noe fra tidligere.
+    $MidlertidigBrukernavn = ""
     $sjekk = $true
 
     #If-testene under sjekker om lengden på fornavn og etternavn. Hvis etternavnet er på to bokstaver blir brukernavent på to bokstaver i stedet for tre
@@ -21,9 +21,9 @@ function Set-Brukernavn($fornavn, $etternavn) {
     $navn = Format-Brukernavn($brukernavn)
     $MidlertidigBrukernavn = $navn
     do{
-        #Sjekker om brukernavnet er i bruk. Hvis brukernavn ikke finnes er resultatet
-        $null
-        $finnes = Get-ADUser -Filter {SamAccountName -eq $MidlertidigBrukernavn}
+        #Sjekker om brukernavnet er i bruk. Hvis brukernavn ikke finnes er resultatet $null, lager en scriptblock for at variablen $MidlertidigBrukernavn skal valideres før den sendes som et parameter inni en scriptblock 
+        $scriptblock = [scriptblock]::Create("Get-ADUser -Filter {SamAccountName -eq `"$MidlertidigBrukernavn`"}")
+        $finnes = Invoke-Command -ScriptBlock $scriptblock
         #Hvis $finnes er lik $null
         if($finnes -eq $null){
             $sjekk = $false

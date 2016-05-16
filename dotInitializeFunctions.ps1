@@ -16,3 +16,5 @@
 
 # Skript gitt ut i høst
 . C:\Git-PowershellSkript\IIE-26E\ExchangeGamleScripts\IMPORT-FUNCTIONS.ps1
+# Tillegg til skriptene delt ut i høst
+. C:\Git-PowershellSkript\IIE-26E\TillegTilGamleScript\dotInitiate.ps1
