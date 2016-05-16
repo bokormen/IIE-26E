@@ -14,6 +14,9 @@
 . C:\Git-PowershellSkript\IIE-26E\Add-BrukerRettigheter.ps1
 . C:\Git-PowershellSkript\IIE-26E\Remove-BrukerRettigheter.ps1
 
+
+. C:\Git-PowershellSkript\IIE-26E\Get-ExchangeServerNavn.ps1
+
 # Skript gitt ut i høst
 . C:\Git-PowershellSkript\IIE-26E\ExchangeGamleScripts\IMPORT-FUNCTIONS.ps1
 # Tillegg til skriptene delt ut i høst
