@@ -1354,6 +1354,8 @@ function New-DeltPostboks{
 #Oppretter en ny kontaktliste 
 function New-Kontaktliste{
 
+    $sjekkNavn = $null
+
     [string]$navn = Read-Host "Skriv inn navn på distribusjonsgruppe"     
     if($navn -ne ""){ 
         #sjekker om kontaklisten finnes fra før 
