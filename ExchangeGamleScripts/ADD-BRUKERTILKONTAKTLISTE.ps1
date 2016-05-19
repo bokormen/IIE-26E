@@ -1,4 +1,5 @@
-﻿function Add-BrukerTilKonakListe($Navn){ 
+﻿# Legger en bruker til en Kontaktliste
+function Add-BrukerTilKonakListe($Navn){ 
 
 #en variabel som trengs senere for å få en riktig test
 $errStoerelse = 0                 
@@ -51,7 +52,7 @@ do{
                 if($_.Mail -ne ""){ 
                     #Legger en bruker til distubusjonsgruppa 
                     Add-DistributionGroupMember -Identity $Navn -Member $_.samaccountname <#-ErrorVariable err #>-ErrorAction SilentlyContinue
-                    $scriptblock = [scriptblock]::Create("(Get-DistributionGroupMember -Identity `"$Navn`" | Where-Object{`$_.Alias -eq `"$_.samAccountName`"} | select samAccountName | Format-Table -HideTableHeaders | out-string).Trim()")
+                    $scriptblock = [scriptblock]::Create("Get-DistributionGroupMember -Identity `"$Navn`" | Where-Object{`$_.Alias -eq `"$_.samAccountName`"}")
                     $sjekkResultat = Invoke-Command -ScriptBlock $scriptblock
                 }                  
                 if($sjekkResultat -eq ""){

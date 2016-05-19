@@ -1,30 +1,23 @@
-﻿#Oppretter en ny kontaktliste 
+﻿# Sletter en kontaktliste 
 function Remove-Kontaktliste{
+    # Får navnet på en kontaktliste
+    $navn = Get-Kontaktliste "Skriv inn navn på distribusjonsgruppe"
 
-    [string]$navn = Read-Host "Skriv inn navn på distribusjonsgruppe"     
-    if($navn -ne ""){ 
-        #sjekker om kontaklisten finnes fra før 
-        $scriptblock = [scriptblock]::Create("Get-DistributionGroup -Filter {name -eq `"$navn`"}")
-        $sjekkNavn = Invoke-Command -ScriptBlock $scriptblock
-    } 
-
-    #Løkken går så lenge gruppen ikke finnes fra før
-    while($sjekkNavn -eq $null -or $navn -eq ""){ 
-             
-        $navn = Read-Host "distribusjonsgruppen ser ikke ut til å eksistere. Skriv inn nytt navn på distribusjonsgruppe"             
-        if($navn -ne ""){
-            $scriptblock = [scriptblock]::Create("Get-DistributionGroup -Filter {name -eq `"$navn`"}")
-            $sjekkNavn = Invoke-Command -ScriptBlock $scriptblock
-        } 
-    } 
     #Sletter en kontaktliste, legger utskriften i en variabel, slik at vi har kontroll på hva som blir skrevet ut
     $enVariabel = Remove-DistributionGroup $navn
     
-    #Tester om gruppen fortsatt eksisterer  
+    #Tester om gruppen fortsatt eksisterer, når scriptblock'en kjøres, så returnes $null hvis alt har gått som det skal
     $scriptblock = [scriptblock]::Create("Get-DistributionGroup -Filter {name -eq `"$navn`"}")
     $eksistererGruppen = Invoke-Command -ScriptBlock $scriptblock
 
+    # Skriver ut en melding til brukeren om resultatet av kjøringen
     if($eksistererGruppen -ne $null) {
         Write-Host "Det ser ut til å ha skjedd en feil, distribusjonsgruppen eksisterer fortsatt" -ForegroundColor Red
+    } else {
+        Write-Host "Distribusjonsgruppen $navn eksisterer ikke lengre" -ForegroundColor Green
     }
+    # Setter skriptet på pause, slik at brukeren får lest meldingen
+    Pause
+    # Fjernet innholdet i konsollen slik at det ser mer ryddig ut
+    Clear-Host
 }
