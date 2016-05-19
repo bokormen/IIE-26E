@@ -8,10 +8,12 @@ function New-DeltPostboks{
     $entydig = Test-PostboksAlias 
  
     #Opretter en nydelt postboks 
-    New-Mailbox -Shared -Name $navn -DisplayName $navn -Alias $entydig -ErrorVariable err 
+    New-Mailbox -Shared -Name $navn -DisplayName $navn -Alias $entydig
+
+    $konto = Get-Mailbox $entydig -RecipientTypeDetails sharedmailbox  –ErrorAction SilentlyContinue
  
-    #Godkjenings melding hvis det ikke er noen feil     
-    if($err.length -eq 0){     
+    #Godkjenings melding postboksen nå eksisterer   
+    if($konto -ne $null){     
         Write-Host "`nDen delte postboksen $navn ble oprettet" -ForegroundColor Green 
     } 
      
