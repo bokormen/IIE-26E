@@ -15,11 +15,13 @@ function New-DeltPostboks{
     #Godkjenings melding postboksen nå eksisterer   
     if($konto -ne $null){     
         Write-Host "`nDen delte postboksen $navn ble oprettet" -ForegroundColor Green 
-    } 
      
-    $Valg = Read-Host "Ønsker du å legge til rettigheter (eks: j/n)"     
-    #Får valg om en ønsker å gi brukere rettigheter til den delte postboksen     
-    if($Valg -eq "j"){     
-        Set-Rettigheter $entydig 
-    }  
+        $Valg = Read-Host "Ønsker du å legge til rettigheter (eks: j/n)"     
+        #Får valg om en ønsker å gi brukere rettigheter til den delte postboksen     
+        if($Valg -eq "j"){     
+            Set-Rettigheter $entydig 
+        }
+    } else {
+        Write-Host "Det ser ut til å ha skjedd en feil, og den delte postboksen har ikke blitt opprettet" -ForegroundColor Red
+    }
 }
