@@ -1,4 +1,4 @@
-# Det er denne funksjonen som brukes for å starte fjernadminsitrajsonen av exchange
+# Det er denne funksjonen som brukes for å starte fjernadministrasjonen av exchange
 Function Start-FjernadministrasjonExchange() {
     # Begynner med en blank konsoll
     Clear-Host
@@ -29,17 +29,17 @@ Function Start-FjernadministrasjonExchange() {
     # Oppretter en tilkobling til domenekontrolleren
     $domeneKontrollerSession = New-PSSession -ComputerName $domeneKontrollerNavn -Port $port -Credential $innlogginsInfo
 
-    # Henter modulen ActiveDirectory til sessjonen til domenekontrolleren, legger utskriften i en egen variabel, da jeg ikke er intresert i å se den på skjermen
+    # Henter modulen ActiveDirectory til sesjonen til domenekontrolleren, legger utskriften i en egen variabel, da jeg ikke er intresert i å se den på skjermen
     $v1 = Invoke-Command -Session $domeneKontrollerSession {Import-Module -Name ActiveDirectory}
 
-    # Importerer cmdlet'ene som finnes i sessjonen tilhørende exchangeserveren, legger utskriften i en egen variabel, da jeg ikke er intresert i å se den på skjermen
+    # Importerer cmdlet'ene som finnes i sesjonen tilhørende exchangeserveren, legger utskriften i en egen variabel, da jeg ikke er intresert i å se den på skjermen
     $v2 = Import-PSSession $exchangeSession -WarningAction silentlyContinue
 
-    # Importerer cmdlet'ene i modulen ActiveDirectory fra sessjonen tilhørende domenekontrolleren, legger utskriften i en egen variabel, da jeg ikke er intresert i å se den på skjermen
+    # Importerer cmdlet'ene i modulen ActiveDirectory fra sesjonen tilhørende domenekontrolleren, legger utskriften i en egen variabel, da jeg ikke er intresert i å se den på skjermen
     $v3 = Import-PSSession $domeneKontrollerSession -Module ActiveDirectory -WarningAction silentlyContinue
 
     
-    # Hvis det oppstod tilkoblingsproblemmer er variablene $v2 og $v3 tomme, så da skrives det ut en feilmelding. Hvis alt har gått greit, så startes fjernadministrajsonen av exchangeserveren
+    # Hvis det oppstod tilkoblingsproblemmer er variablene  $v2 og $v3 tomme, så da skrives det ut en feilmelding. Hvis alt har gått greit, så startes fjernadministrajsonen av exchangeserveren
     if(($v2 -eq $null) -or ($v3 -eq $null)){
         # Det skrives ut en feilmelding
         Write-Host "Noe gikk galt ved tilkoblingen til serverene, sjekk at du har skrevet alt riktig, og prøv igjen`nhvis det fortsatt ikke fungerer, kontakt systemansvarlig" -ForegroundColor Red
@@ -49,12 +49,12 @@ Function Start-FjernadministrasjonExchange() {
     }
 
 
-    # Når avministrasjonen er ferdig, så fjernes sesjonene som har vært brukt i fjernavministrasjonen
+    # Når administrasjonen er ferdig, så fjernes sesjonene som har vært brukt i fjernadministrasjonen
     $v4 = Remove-PSSession $exchangeSession
     $v5 = Remove-PSSession $domeneKontrollerSession
 }
 
-# Denne funksjonen kan brukes til å starte en tilkobling til exchange hvis man ønsker å kjøre kommadnoer som ikke er dekket av de cmdlet'ene som følger med denne modulen
+# Denne funksjonen kan brukes til å starte en tilkobling til exchange hvis man ønsker å kjøre kommandoer som ikke er dekket av de cmdlet'ene som følger med denne modulen
 function Start-FjerntilkoblingExchange() {
     # Begynner med en blank konsoll
     Clear-Host
@@ -85,23 +85,23 @@ function Start-FjerntilkoblingExchange() {
     # Oppretter en tilkobling til domenekontrolleren
     $domeneKontrollerSession = New-PSSession -ComputerName $domeneKontrollerNavn -Port $port -Credential $innlogginsInfo
 
-    # Henter modulen ActiveDirectory til sessjonen til domenekontrolleren, legger utskriften i en egen variabel, da jeg ikke er intresert i å se den på skjermen
+    # Henter modulen ActiveDirectory til sesjonen til domenekontrolleren, legger utskriften i en egen variabel, da jeg ikke er intressert i å se den på skjermen
     $v1 = Invoke-Command -Session $domeneKontrollerSession {Import-Module -Name ActiveDirectory}
 
-    # Importerer cmdlet'ene som finnes i sessjonen tilhørende exchangeserveren, legger utskriften i en egen variabel, da jeg ikke er intresert i å se den på skjermen
+    # Importerer cmdlet'ene som finnes i sesjonen tilhørende exchangeserveren, legger utskriften i en egen variabel, da jeg ikke er intressert i å se den på skjermen
     $v2 = Import-PSSession $exchangeSession -WarningAction silentlyContinue
 
-    # Importerer cmdlet'ene i modulen ActiveDirectory fra sessjonen tilhørende domenekontrolleren, legger utskriften i en egen variabel, da jeg ikke er intresert i å se den på skjermen
+    # Importerer cmdlet'ene i modulen ActiveDirectory fra sesjonen tilhørende domenekontrolleren, legger utskriften i en egen variabel, da jeg ikke er intressert i å se den på skjermen
     $v3 = Import-PSSession $domeneKontrollerSession -Module ActiveDirectory -WarningAction silentlyContinue
 
 }
 
-# Denne funksjonen skriver ut hovedmenyen frem til noen velger avlsutt i menyen
+# Denne funksjonen skriver ut hovedmenyen frem til noen velger avslutt i menyen
 function Start-ExchangeAdminstrasjon() {
     # While løkken kjører frem til det kjøres en break med taggen exchangeAdministrasjon
     :exchangeAdministrasjon while ($true) {
         # While løkken kjører frem til det kjøres en break med taggen fortsettAdministrering
-        # Denne er her slik at en bruker kan avslutte en uproduktiv leting etter en bruker blant annet, uten å måtte starte funksjonen som starter fjernadminstrering av exchange på nytt
+        # Denne er her slik at en bruker kan avslutte en uproduktiv leting etter en bruker blant annet, uten å måtte starte funksjonen som starter fjernadministrering av exchange på nytt
         :fortsettAdministrering while($true) {
             # Åpner hovedmenyen
             Get-Hovedmeny
@@ -114,7 +114,7 @@ function Get-FqdnExchange() {
     # Tar inn en verdi som foreslås som verdien som skal returneres
     param([string]$defaultExchangeNavn)
 
-    # Spør brukeren etter et fqdn på maskinen han øsnker å koble til
+    # Spør brukeren etter et fqdn på maskinen han ønsker å koble til
     $exchangeNavn = Read-Host "Skriv inn FQDN på Exchangeserveren som skal administreres, om det er et navn i [] som stemmer, trykk enter [$defaultExchangeNavn]"
     
     # Sjekker om verdien brukeren skrev inn er tom, hvis den er det, så settes verdien til den foreslåtte verdien, gitt at ikke den og er tom
@@ -127,12 +127,12 @@ function Get-FqdnExchange() {
         Write-Host "Skriptet har ikke klart å foreslå et navn på en Exchange server for deg, så du må skrive inn et FQDN på Exchange serveren du ønsker å administrere" -ForegroundColor Yellow
     }
 
-    # Tar utganspunkt i at navnet brukeren har gitt, er skrevet korrekt
+    # Tar utgangspunkt i at navnet brukeren har gitt, er skrevet korrekt
     $exchangeNavneSjekk = "y"
 
     # denne do while løkken kjører så lenge brukeren ikke er fornøyd med den verdien som er gitt
     do {
-        # Så lenge fqdn navnet brukeren gir, er tomt, så vil denne løkken kjøre, og ber brukeren om å skrive inn et fqdn på exchange serveren som skal adminsitreres
+        # Så lenge fqdn navnet brukeren gir, er tomt, så vil denne løkken kjøre, og ber brukeren om å skrive inn et fqdn på exchange serveren som skal administreres
         while($exchangeNavn -eq "") {
             $exchangeNavn = Read-Host "Skriv inn et FQDN på Exchange serveren du ønsker å administrere, du kan ikke la det være blankt"
         }
@@ -156,7 +156,7 @@ function Get-FqdnDomeneKontroller() {
     # Tar inn en verdi som foreslås som verdien som skal returneres
     param([string]$defaultDomeneKontrollerNavn)
 
-    # Spør brukeren etter et fqdn på maskinen han øsnker å koble til
+    # Spør brukeren etter et fqdn på maskinen han ønsker å koble til
     $domeneKontrollerNavn = Read-Host "Skriv inn FQDN på domene kontrolleren som skal administreres, om det er et navn i [] som stemmer, trykk enter [$defaultDomeneKontrollerNavn]"
 
     # Sjekker om verdien brukeren skrev inn er tom, hvis den er det, så settes verdien til den foreslåtte verdien, gitt at ikke den og er tom
@@ -169,7 +169,7 @@ function Get-FqdnDomeneKontroller() {
         Write-Host "Skriptet har ikke klart å foreslå et navn på en domene kontroller for deg, så du må skrive inn et FQDN på domene kontrolleren du ønsker å administrere" -ForegroundColor Yellow
     }
 
-    # Tar utganspunkt i at navnet brukeren har gitt, er skrevet korrekt
+    # Tar utgangspunkt i at navnet brukeren har gitt, er skrevet korrekt
     $domeneKontrollerNavneSjekk = "y"
 
     # denne do while løkken kjører så lenge brukeren ikke er fornøyd med den verdien som er gitt
@@ -195,19 +195,19 @@ function Get-FqdnDomeneKontroller() {
     return $domeneKontrollerNavn
 }
 
-# denne funksjonen spør brukeren etter porten som brukes for å koble til domenekontrollren, den foreslår standarporten
+# denne funksjonen spør brukeren etter porten som brukes for å koble til domenekontrollren, den foreslår standardporten
 function Get-FjernadministreringsPort() {
-    # paramteret skal være en tallverdi som er standarporten for fjernstilkobling til powershell
+    # paramteret skal være en tallverdi som er standardporten for fjernstilkobling til powershell
     param([string]$defaultPort)
 
-    # Spør brukeren etter et protnummer som skal brukes, foreslår å bruke standardporten
+    # Spør brukeren etter et portnummer som skal brukes, foreslår å bruke standardporten
     $port = Read-Host "Skriv inn portnummer til domene kontrolleren som skal administreres, om portnummeret i [] stemmer, trykk enter [$defaultPort]"
 
-    # Hvis inpurten fra brukeren er tom, så brukes standarporten
+    # Hvis inputen fra brukeren er tom, så brukes standardporten
     if($port -eq "") {
         $port = $defaultPort
     }
-    # Variablen som brukes for å sjekke om brukeren mener valget han har gjort er rett
+    # Variabelen som brukes for å sjekke om brukeren mener valget han har gjort er rett
     $portSjekk = "n"
 
     # Denne løkken kjører frem til brukeren er fornøyd med det valget som er gjort
@@ -264,22 +264,22 @@ Function Get-ExchangeServerInSite {
 
 # Denne funksjonen tester om maskinen koden kjøres på er medlem i et domene, hvis den er det, så søkes det etter exchange servere, og fqdn på en av de eventuelle exchangeserveren returneres
 function Get-ExchangeServerNavn() {
-    # Variablen som skal returneres
+    # Variabelen som skal returneres
     $exchangeServer = ""
-    # Tester om maskinen er medlemm i et domene
+    # Tester om maskinen er medlem i et domene
     if ((gwmi win32_computersystem).partofdomain -eq $true) {
         # Får fqdn på en exchangeserver i domenet
         $exchangeServer = (Get-ExchangeServerInSite | select -first 1 | Select FQDN | Format-Table -HideTableHeaders -AutoSize -Wrap | Out-String).Replace("`n","").Replace("`r","").Trim()
     }
-    # returnrer et eventuelt fqdn om det ble funnet en exchangeserver, hvis ikke er stringen tom
+    # returnerer et eventuelt fqdn om det ble funnet en exchangeserver, hvis ikke er stringen tom
     return $exchangeServer
 }
 
 # Denne funksjonen tester om maskinen koden kjøres på er medlem i et domene, hvis den er det, så søkes det etter domenekontrollere, og fqdn på en av de eventuelle domenekontrollerene returneres
 function Get-DomeneKontrollerNavn() {
-    # Variablen som skal returneres
+    # Variabelen som skal returneres
     $domeneKontroller = ""
-    # Tester om maskinen er medlemm i et domene
+    # Tester om maskinen er medlem i et domene
     if ((gwmi win32_computersystem).partofdomain -eq $true) {
         # Får fqdn på en domenekontroller i domenet
         $domeneKontroller = ([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().DomainControllers | select Name | Select -First 1 | Format-Table -HideTableHeaders -AutoSize -Wrap | Out-String).Replace("`n","").Replace("`r","").Trim()
@@ -288,12 +288,12 @@ function Get-DomeneKontrollerNavn() {
     Return $domeneKontroller
 }
 
-# Denne funksjoenne gir en bruker rettighet(er) til en annen brukerkonto
+# Denne funksjonen gir en bruker rettighet(er) til en annen brukerkonto
 function Add-Brukerrettigheter() {
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
     Clear-Host
     # Får tak i aliaset til brukeren som skal få rettigheter
-    $bruker = Get-Epostkonto "Skriv inn navnet på brukeren som skal få rettigheter til en annen konto (brukeren må ha en e-postkonto aktivert)"
+    $bruker = Get-Epostkonto "Skriv inn navnet på brukeren som skal få rettigheter til en annen konto (brukeren må ha en epostkonto aktivert)"
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
     Clear-Host
     # Får tak i aliaset til kontoen brukeren skal få rettigheter til
@@ -308,7 +308,7 @@ function Add-Brukerrettigheter() {
 # Funksjonen gir en bruker rettighet(er) til en annen postboks
 function Add-Rettigheter() {
     
-    # Funksjonen tar inn to stringer, som hver er et alias som beksriver en bruker og en konto
+    # Funksjonen tar inn to stringer, som hver er et alias som beskriver en bruker og en konto
     param([string]$bruker,[string]$konto)
 
     # Får tak i en liste over hvilke rettigheter brukeren alt har, som jeg legger inn i en arraylist for å gjøre det enklere å bearbeide
@@ -331,7 +331,7 @@ function Add-Rettigheter() {
         }
     }
 
-    # Lister ut hvilke rettigheter brukeren kan tildeles kontoen, samt en tallverdi foran rettighene som representerer rettigheten når den senre kan bli valgt
+    # Lister ut hvilke rettigheter brukeren kan tildeles kontoen, samt en tallverdi foran rettighetene som representerer rettigheten når den senere kan bli valgt
     # Hvis ikke det er flere rettigheter å tildele, så skrives det ut en beskjed om det
     if($tilgjengeligeRettigher.Count -gt 1) {
         # Her skrives listen over tilgjendelige rettigheter ut
@@ -360,7 +360,7 @@ function Add-Rettigheter() {
         $erRetteVerdier = [boolean]$true
 
         # Ber brukeren skive inn hvilke rettigheter brukeren ønsker å gi, det kan legges til flere rettigheter, men da må de adskilles med komma
-        $nyeRettigheter = Read-Host "`n`nSkriv inn nummeret som står før rettigheten du ønsker å gi $bruker til kontoen $konto`nOm du ønsker å tildele flere rettigheter, så kan du liste opp flere nummer, adskilt med ,`nSkriv inn nummerene på rettigheten(e) du ønsker å gi"
+        $nyeRettigheter = Read-Host "`n`nSkriv inn nummeret som står før rettigheten du ønsker å gi $bruker til kontoen $konto`nOm du ønsker å tildele flere rettigheter, så kan du liste opp flere nummer, adskilt med ,`nSkriv inn numrene på rettigheten(e) du ønsker å gi"
 
         # Fjerner "whitespace"
         $nyeRettigheter.Trim(" ") | Out-Null
@@ -373,8 +373,8 @@ function Add-Rettigheter() {
 
         # sjekker at brukeren har gitt en verdi, og ikke bare har trykket enter uten å skrive inn noe
         if($nyeRettigheter.Count -eq 0) {
-            # Skriver ut en beskjed om at tomt valg ikek er en mulighet, og setter verdien $erRetteVerdier til false for å indikere at vi ikke har fått noe som kan jobbes videre med og det må spørres på nytt
-            Write-Host "Du kan ikke bare trykke på enter, du måt gjøre et valg, om du øsnker å avslutte, kan du skrive inn" ($tilgjengeligeRettigher.Count-1) -ForegroundColor Red
+            # Skriver ut en beskjed om at tomt valg ikke er en mulighet, og setter verdien $erRetteVerdier til false for å indikere at vi ikke har fått noe som kan jobbes videre med og det må spørres på nytt
+            Write-Host "Du kan ikke bare trykke på enter, du måt gjøre et valg, om du ønsker å avslutte, kan du skrive inn" ($tilgjengeligeRettigher.Count-1) -ForegroundColor Red
             $erRetteVerdier = $false
         # Sjekker at en rettighet ikke er skrevet inn to ganger, har valgt å ikke tillate det, hvis et valg ikke er oppgitt to ganger, så sjekker jeg at alle valgene er tall
         } elseif($temp.count -eq $nyeRettigheter.Count) {
@@ -422,7 +422,7 @@ function Add-Rettigheter() {
     # sjekker om det er riktige verdier som er skrevet inn, hvis ikke, så går løkken gjennom prosessen med å få valgene fra brukeren på nytt
     } while (!$erRetteVerdier)
 
-    # Hvis valget er å ikke legge til flere rettigher, så avlsuttes funksjonen
+    # Hvis valget er å ikke legge til flere rettigheter, så avsluttes funksjonen
     if($nyeRettigheter[0] -eq ($tilgjengeligeRettigher.Count -1)) {
         return
     }
@@ -432,7 +432,7 @@ function Add-Rettigheter() {
 
     # For hvert valg som er gjort, legges det til en rettighet
     foreach($valg in $nyeRettigheter) {
-        # Switchen gis beskjed om hvilken rettighet som sakl legges til, og kjører koden som sørger for at den rettigheten blir gitt
+        # Switchen gis beskjed om hvilken rettighet som skal legges til, og kjører koden som sørger for at den rettigheten blir gitt
         switch ($tilgjengeligeRettigher[[int]$valg]) {
             "FullAccess"{
                 Add-MailboxPermission -Identity $kontoNavn -User $bruker -AccessRights "FullAccess" | Out-Null
@@ -441,13 +441,13 @@ function Add-Rettigheter() {
                 Add-ADPermission -Identity $kontoNavn -User $bruker -Extendedrights "Send-As" | Out-Null
             }
             "SendOnBehalfOf"{
-                # Må bruke scriptblock for at berdien for $bruker skal sendes videre som aliaset til brukeren, og ikke som en string "$bruker"
+                # Må bruke scriptblock for at verdien for $bruker skal sendes videre som aliaset til brukeren, og ikke som en string "$bruker"
                 $scriptblock = [scriptblock]::Create("Set-Mailbox -Identity $konto -GrantSendOnBehalfTo @{Add=`"$bruker`"}")
                 Invoke-Command -ScriptBlock $scriptblock | Out-Null
             }
             default {
-                # Det skal ikke være mulig å havne her, men skulle det ha skjedd en feil, så bør systemansvarlig gies beskjed slik at logiken kan rettes på
-                Write-Host "Det har skjedd en feil, informer presonen som vedlikeholder skriptet om dette," $tilgjengeligeRettigher[[int]$valg] "ble forsøkt valg, og finnes ikke" -ForegroundColor Red
+                # Det skal ikke være mulig å havne her, men skulle det ha skjedd en feil, så bør systemansvarlig gis beskjed slik at logikken kan rettes på
+                Write-Host "Det har skjedd en feil, informer personen som vedlikeholder skriptet om dette," $tilgjengeligeRettigher[[int]$valg] "ble forsøkt valg, og finnes ikke" -ForegroundColor Red
             }
         }
     }
@@ -455,7 +455,7 @@ function Add-Rettigheter() {
     # Får tak i listen over hvilke rettigheter brukeren nå har til kontoen
     $rettigheter = [System.Collections.ArrayList](Get-ListeOverGitteBrukerrettigher $bruker $konto).Split(",",[System.StringSplitOptions]::RemoveEmptyEntries)
 
-    # Fjerner tildigere utskrift fra konsollen for at det skal se mer ryddig ut
+    # Fjerner tidligere utskrift fra konsollen for at det skal se mer ryddig ut
     Clear-Host
 
     # Gir beskjed om at handlingene ser ut til å ha vært vellykkede, og lister ut de rettighetene brukeren nå har til kontoen
@@ -467,10 +467,10 @@ function Add-Rettigheter() {
     Pause
 }
 
-# Denne funksjonen sletter en bruker fra både domenet og e-post serveren
+# Denne funksjonen sletter en bruker fra både domenet og epost serveren
 function Delete-Brukerkonto() {
         # Får tak i brukeren som skal slettes
-        $bruker = Get-Epostkonto "Skriv inn navnet på brukeren hvor epostkontoen og domenebrukeren skal slettes (brukeren må ha en e-postkonto aktivert)"
+        $bruker = Get-Epostkonto "Skriv inn navnet på brukeren hvor epostkontoen og domenebrukeren skal slettes (brukeren må ha en epostkonto aktivert)"
         
         # Sletter brukeren
         Remove-ADUser $bruker
@@ -478,47 +478,47 @@ function Delete-Brukerkonto() {
         #Sjekker om det forsatt eksisterer en brukerkonto tilhørende brukeren
         if (((Get-ADUser $bruker -ErrorAction SilentlyContinue) -eq $null) -and ((Get-Mailbox $bruker -ErrorAction SilentlyContinue) -eq $null)) {
             # Gir beskjed om at brukeren ikke lengre eksisterer
-            Write-Host "$bruker's e-postkonto og domenebruker er nå slettet" -ForegroundColor Green
+            Write-Host "$bruker's epostkonto og domenebruker er nå slettet" -ForegroundColor Green
         } else {
             # Gir beskjed om at noe ser ut til å ha gått galt
-            Write-Host "$bruker's e-postkonto eller domenebruker ser fortsatt ut til å eksistere" -ForegroundColor Red
+            Write-Host "$bruker's epostkonto eller domenebruker ser fortsatt ut til å eksistere" -ForegroundColor Red
         }
 }
 
-# Denne funksjonen fjerner e-postkontoen til en bruker
+# Denne funksjonen fjerner epostkontoen til en bruker
 function Delete-Epostkonto() {
     # Får tak i brukeren det gjelder
-    $bruker = Get-Epostkonto "Skriv inn navnet på brukeren hvor epostkontoen skal slettes (brukeren må ha en e-postkonto aktivert)"
+    $bruker = Get-Epostkonto "Skriv inn navnet på brukeren hvor epostkontoen skal slettes (brukeren må ha en epostkonto aktivert)"
     
-    # Fjerner e-postkontoen
+    # Fjerner epostkontoen
     Disable-Mailbox $bruker
 
-    # Kontrollerer om det fortsatt finnes en e-postkonto tilhørende brukeren
+    # Kontrollerer om det fortsatt finnes en epostkonto tilhørende brukeren
     if((Get-Mailbox $bruker -ErrorAction SilentlyContinue) -eq $null) {
-        # Gir beskjed om at det ikke lengre finnes en e-postkonto tilhørende brukeren
-        Write-Host "$bruker's e-postkonto er nå slettet" -ForegroundColor Green
+        # Gir beskjed om at det ikke lengre finnes en epostkonto tilhørende brukeren
+        Write-Host "$bruker's epostkonto er nå slettet" -ForegroundColor Green
     } else {
-        # Gir beskjed om at noe set ut til å ha gått galt
-        Write-Host "$bruker's e-postkonto ser fortsatt ut til å eksistere" -ForegroundColor Red
+        # Gir beskjed om at noe ser ut til å ha gått galt
+        Write-Host "$bruker's epostkonto ser fortsatt ut til å eksistere" -ForegroundColor Red
     }
     
 }
 
-# Denne funskjonen returnerer aliaset til en bruker med postboks
+# Denne funksjonen returnerer aliaset til en bruker med postboks
 function Get-Epostkonto() {
     # Tar inn en string som beskriver hvilken bruker programvaren spør etter
     param([string]$spoereTekst)
 
-    # Oppretter de variablene som skal brukes senre i koden
+    # Oppretter de variablene som skal brukes senere i koden
     $bruker = ""
     $oenskerAaFortsette = "n"
     $riktigBruker = ""
 
     # Denne do while løkken kjører så lenge brukeren ikke gir beskjed om at det var riktig bruker koden fant
     do {
-        # Denne do while løkken kjører så lenge brukeren ikke er funnet, eller brukeren ikke lengre ønsker å forsåke å finne en bruker
+        # Denne do while løkken kjører så lenge brukeren ikke er funnet, eller brukeren ikke lengre ønsker å forsøke å finne en bruker
         do {
-            # Denne variablen teller hvor mange ganger brukeren har forsøkt å finne en bruker, men ikke lykkes
+            # Denne variabelen teller hvor mange ganger brukeren har forsøkt å finne en bruker, men ikke lykkes
             $count = 0
             do{
                 # Skriver ut stringen som beskriver hva slags bruker det letes etter
@@ -544,11 +544,11 @@ function Get-Epostkonto() {
             # Sjekker om det er funnet en bruker, og at det er gjort færre enn 5 forsøk siden sist bruker ble spurt om brukeren ønsket å ikke gjøre flere forsøk
             } while(($bruker -eq "" -or $entydig -eq "") -and $count -lt 5)
 
-            # Sjekker om det er funnet en bruker, hvis ikke blir brukeren spurt om brukeren ønsker å gi seg, hvis brukeren øsnker å gi seg, så 
+            # Sjekker om det er funnet en bruker, hvis ikke blir brukeren spurt om brukeren ønsker å gi seg, hvis brukeren ønsker å gi seg, så 
             if($bruker -eq "") {
-                # Brukeren blir spurt om han øsnker å gi seg
-                $oenskerAaFortsette = (Read-Host "Du ser ut til å ha gjort noen forsøk uten å lykkes, ønsker du å forsette? [y/n]").ToLower().Trim()
-                # Hvis brukeren øsnker å gi seg, så returnerer koden til hovedmenyen
+                # Brukeren blir spurt om han ønsker å gi seg
+                $oenskerAaFortsette = (Read-Host "Du ser ut til å ha gjort noen forsøk uten å lykkes, ønsker du å fortsette? [y/n]").ToLower().Trim()
+                # Hvis brukeren ønsker å gi seg, så returnerer koden til hovedmenyen
                 if ($oenskerAaFortsette -ne "y") {
                     Break fortsettAdministrering
                 }
@@ -564,26 +564,26 @@ function Get-Epostkonto() {
         $riktigBruker = Read-Host "var det $bruker du så etter? [y/n]"
         $riktigBruker = $riktigBruker.ToLower().Trim()
     
-    # Tester om brukeren har gitt beskjed om at det er riktig brukre som er funnet
+    # Tester om brukeren har gitt beskjed om at det er riktig bruker som er funnet
     } while ($riktigBruker -ne "y")
 
     # Returnerer brukeren som er funnet
     return $bruker
 }
 
-#Funksjonen tar imot et brukernavn, og navnet på en e-postkonto, og returnerer en liste med rettigheter denne brukeren har til denne e-postkontoen. Funkjsonen forholder seg kun til rettighetene FullAccess, Send-As, og SendOnBehalfOf og tar ikke hensyn til arv
+# Funksjonen tar imot et brukernavn, og navnet på en epostkonto, og returnerer en liste med rettigheter denne brukeren har til denne epostkontoen. Funksjonen forholder seg kun til rettighetene FullAccess, Send-As, og SendOnBehalfOf og tar ikke hensyn til arv
 function Get-ListeOverGitteBrukerrettigher() {
 
-    #parameterene som blir sendt til funksjonen får navn jeg kan bruke videre
+    # parameterne som blir sendt til funksjonen får navn jeg kan bruke videre
     param([string]$bruker,[string]$epostkonto)
 
 
-    # Initialiserer ArrayList-en som skal inneholde de forskjellige rettighetene brukeren har til e-postkontoen
+    # Initialiserer ArrayList-en som skal inneholde de forskjellige rettighetene brukeren har til epostkontoen
     $Resultat = [System.Collections.ArrayList]@()
 
     
     # Denne bolken sjekker om brukeren har tilgangen FullAccess,
-    # Utskriften fra funksjonen som sjekker for rettigheten behandles slik at vi sitter igjen med bare rettighetene brukeren har til e-postkontoen
+    # Utskriften fra funksjonen som sjekker for rettigheten behandles slik at vi sitter igjen med bare rettighetene brukeren har til epostkontoen
     # Denne delen kan enkelt modifiseres til å sjekke for rettighetene DeleteItem, ReadPermission, ChangePermission, ChangeOwner ved å legge til flere ifsettniger som sjekker innholdet i arraylisten
     $ResultatMailboxPermission = [System.Collections.ArrayList]((Get-MailboxPermission -Identity $epostkonto -User $bruker | Select-Object AccessRights | Format-Table -HideTableHeaders -AutoSize -Wrap | Out-String).Replace('{','').Replace('}','').Replace("`n",", ").Replace("`r",", ").Trim()).Split(", ",[System.StringSplitOptions]::RemoveEmptyEntries)
 
@@ -593,7 +593,7 @@ function Get-ListeOverGitteBrukerrettigher() {
 
 
     # Denne bolken sjekker om brukeren har tilgangen Send-As,
-    # Utskriften fra funksjonen som sjekker for rettigheten behandles slik at vi sitter igjen med bare rettighetene brukeren har til e-postkontoen
+    # Utskriften fra funksjonen som sjekker for rettigheten behandles slik at vi sitter igjen med bare rettighetene brukeren har til epostkontoen
     $ResultatSendAs = (Get-Mailbox -Identity $epostkonto | Get-ADPermission -User $bruker | where {($_.ExtendedRights -like “*Send-As*”)} | Select-Object ExtendedRights | Format-Table -HideTableHeaders -AutoSize -Wrap | Out-String).Replace('{','').Replace('}','').Replace("`n","").Replace("`r","").trim()
     
     if($ResultatSendAs -ne "") {
@@ -602,7 +602,7 @@ function Get-ListeOverGitteBrukerrettigher() {
 
 
     # Denne bolken sjekker om brukeren har tilgangen SendOnBehalfOf,
-    # Utskriften fra funksjonen som sjekker for rettigheten behandles slik at vi sitter igjen med bare rettighetene brukeren har til e-postkontoen
+    # Utskriften fra funksjonen som sjekker for rettigheten behandles slik at vi sitter igjen med bare rettighetene brukeren har til epostkontoen
     $ResultatSendOnBehalf = [System.Collections.ArrayList]((Get-Mailbox -resultsize unlimited | Where {($_.GrantSendOnBehalfTo -ne $null) -and ([string]$_.Alias -eq $epostkonto)} | Select-Object GrantSendOnBehalfTo | Format-Table -HideTableHeaders -Wrap | Out-String).Replace('{','').Replace('}','').Replace("`n","").Replace("`r","").Trim()).Split(",",[System.StringSplitOptions]::RemoveEmptyEntries)
     
     foreach ($element in $ResultatSendOnBehalf) {
@@ -628,7 +628,7 @@ function Get-ListeOverGitteBrukerrettigher() {
         }
     }
 
-    # Hvis returverdien ikke er tom, inneholder den når et unødvendig komma på slutten, som fjernes i denne if settningen
+    # Hvis returverdien ikke er tom, inneholder den når et unødvendig komma på slutten, som fjernes i denne if setningen
     if ($returverdi-ne "") {
         $returverdi = $returverdi.Substring(0,($returverdi.Length-1))
     }
@@ -638,12 +638,12 @@ function Get-ListeOverGitteBrukerrettigher() {
 
 }
 
-# Funksjonene tar inn en liste med valg, skriver dem ut, og spør brukeren hvilket valg brukeren øsnker å gjøre, valget brukeren gjør, valdieres, og returneres som en int
+# Funksjonene tar inn en liste med valg, skriver dem ut, og spør brukeren hvilket valg brukeren ønsker å gjøre, valget brukeren gjør, valideres, og returneres som en int
 function Get-Menyvalg() {
     # Denne funksjoen tar inn en liste med stringer som beskriver valg som kan gjøres 
     param([string[]]$menyvalg)
 
-    # Variablen som brukes for å skrive ut et tall som brukes for å velge menyelement
+    # Variabelen som brukes for å skrive ut et tall som brukes for å velge menyelement
     [int]$i = 0
 
     # De ulike valgene listes ut med et tall foran hvert enkelt valg
@@ -654,9 +654,9 @@ function Get-Menyvalg() {
 
     # Brukeren blir bedt om å skrive inn valget sitt
     $valg = Read-Host -Prompt "Skriv inn valget ditt"
-    # Denne variablen brukes sensere for å kontrollere at det er et helttall som er skrevet inn, og ikke et desimaltall
+    # Denne variabelen brukes senere for å kontrollere at det er et heltall som er skrevet inn, og ikke et desimaltall
     $heltall = 0
-    # Denne variablen brukes senere for å kontrollere om valget som er skrevet inn er et heltall og ikke et desimaltall
+    # Denne variabelen brukes senere for å kontrollere om valget som er skrevet inn er et heltall og ikke et desimaltall
     $gyldigIntValg = $true
     
     # Denne do while løkken kjører fremt til valget som er skrevet inn tilsvarer et menyelement
@@ -702,7 +702,7 @@ function Remove-Brukerrettigheter() {
     # Fjerner utskriften i konsoll vinduet slik at det ser mer ryddig ut
     Clear-Host
     # Får tak i brukeren som skal miste rettighetet
-    $bruker = Get-Epostkonto "Skriv inn navnet på brukeren som skal miste rettigheter til en annen konto (brukeren må ha en e-postkonto aktivert)"
+    $bruker = Get-Epostkonto "Skriv inn navnet på brukeren som skal miste rettigheter til en annen konto (brukeren må ha en epostkonto aktivert)"
     # Fjerner utskriften i konsoll vinduet slik at det ser mer ryddig ut
     # Får tak i kontoen brukeren skal miste rettigheter til
     Clear-Host
@@ -743,7 +743,7 @@ function Remove-Rettigheter() {
         Return
     }
 
-    # Booslk verdi somb rukes for å sjekke at det som skrives inn er verdier som kan brukes videre
+    # Booslk verdi som brukes for å sjekke at det som skrives inn er verdier som kan brukes videre
     $erRetteVerdier = [boolean]$true
     # De ulike rettighetene som skal fjernes fra brukeren til kontoen
     $gamleRettigheter = ""
@@ -754,7 +754,7 @@ function Remove-Rettigheter() {
         $erRetteVerdier = [boolean]$true
 
         # Får inn valget til brukeren over hvilke rettigheter som skal fjernes
-        $gamleRettigheter = [System.Collections.ArrayList]((Read-Host "`n`nSkriv inn nummeret som står før rettigheten du ønsker å frata $bruker til kontoen $konto`nOm du ønsker å frata flere rettigheter, så kan du liste opp flere nummer, adskilt med ,`nSkriv inn nummerene på rettigheten(e) du ønsker å frata").Trim()).Split(",",[System.StringSplitOptions]::RemoveEmptyEntries)
+        $gamleRettigheter = [System.Collections.ArrayList]((Read-Host "`n`nSkriv inn nummeret som står før rettigheten du ønsker å frata $bruker til kontoen $konto`nOm du ønsker å frata flere rettigheter, så kan du liste opp flere nummer, adskilt med ,`nSkriv inn numrene på rettigheten(e) du ønsker å frata").Trim()).Split(",",[System.StringSplitOptions]::RemoveEmptyEntries)
 
         # lagrer de unike verdiene i arrayen i en array som senere brukes for å kontrollere at det kun er gitt unike verdier
         $temp = $gamleRettigheter | Get-Unique
@@ -762,14 +762,14 @@ function Remove-Rettigheter() {
         # Sjekker at det er gjort et valg
         if($gamleRettigheter.Count -eq 0) {
             
-            # Skrivet ut en beskjed detsom det ikke er gjort et valg, og setter $erRetteVerdier til false
-            Write-Host "Du kan ikke bare trykke på enter, du måt gjøre et valg, om du øsnker å avslutte, kan du skrive inn" ($rettigheterSomKanMistes.Count-1) -ForegroundColor Red
+            # Skrivet ut en beskjed dersom det ikke er gjort et valg, og setter $erRetteVerdier til false
+            Write-Host "Du kan ikke bare trykke på enter, du måt gjøre et valg, om du ønsker å avslutte, kan du skrive inn" ($rettigheterSomKanMistes.Count-1) -ForegroundColor Red
             $erRetteVerdier = $false
 
         # Hvis det er gjort et valg, så sjekkes det at alle valgene som er gjort, er unike
         } elseif($temp.count -eq $gamleRettigheter.Count) {
             
-            # Går igjennom alle valgen og sjekker at de er tall, og at tallverdien er innenfor menystørrelsen
+            # Går igjennom alle valgene og sjekker at de er tall, og at tallverdien er innenfor menystørrelsen
             foreach($valg in $gamleRettigheter) {
                 #Sjekker at det er et tal som er skrevet inn
                 if(![boolean]($valg -as [int] -is [int])) {
@@ -791,9 +791,9 @@ function Remove-Rettigheter() {
                         $erRetteVerdier = $false
                         # går ut av foreach løkken da jeg alt ha oppdaget et valg som ikke kan brukes videre, og det da ikke er noe poeng i å gå gjennom flere
                         Break
-                    # Sjekker at det ikke er gjort et valg om å ikke legge til flere rettigheter, samtidig som det er valgt rettigheter som skal taes fra brukeren
+                    # Sjekker at det ikke er gjort et valg om å ikke legge til flere rettigheter, samtidig som det er valgt rettigheter som skal tas fra brukeren
                     } elseif (($valg -eq ($rettigheterSomKanMistes.Count-1)) -and ($gamleRettigheter.Count -gt 1)) {
-                        # Gir beskjed om at valgene som er gjort, er lokgisk gale, og setter $erRetteVerdier til false
+                        # Gir beskjed om at valgene som er gjort, er logisk gale, og setter $erRetteVerdier til false
                         Write-Host "Du kan ikke frata rettigheter, og samtidig gjøre valget:" $rettigheterSomKanMistes[-1] -ForegroundColor Red
                         Write-Host "Skriv inn verdier mellom 0 og" ($rettigheterSomKanMistes.Count-2) "separert med komma, eller bare" ($rettigheterSomKanMistes.Count-1)  -ForegroundColor Red
                         $erRetteVerdier = $false
@@ -813,7 +813,7 @@ function Remove-Rettigheter() {
     # sjekker om det er riktige verdier som er skrevet inn, hvis ikke, så går løkken gjennom prosessen med å få valgene fra brukeren på nytt
     } while (!$erRetteVerdier)
 
-    # Hvis valget er å ikke gjøre noen endringer, så avluttes funksjonen
+    # Hvis valget er å ikke gjøre noen endringer, så avsluttes funksjonen
     if($gamleRettigheter[0] -eq ($rettigheter.Count -1)) {
         return
     }
@@ -831,13 +831,13 @@ function Remove-Rettigheter() {
                 Remove-ADPermission -Identity $kontoNavn -User $bruker -ExtendedRights 'Send-As' -InheritanceType 'All' -ChildObjectTypes $null -InheritedObjectType $null -Properties $null -Confirm:$false | Out-Null
             }
             "SendOnBehalfOf"{
-                # Må bruke scriptblock for at berdien for $bruker skal sendes videre som aliaset til brukeren, og ikke som en string "$bruker"
+                # Må bruke scriptblock for at verdien for $bruker skal sendes videre som aliaset til brukeren, og ikke som en string "$bruker"
                 $scriptblock = [scriptblock]::Create("Set-Mailbox -Identity $konto -GrantSendOnBehalfTo @{Remove=`"$bruker`"}")
                 Invoke-Command -ScriptBlock $scriptblock | Out-Null
             }
             default {
-                # Det skal ikke være mulig å havne her, men skulle det ha skjedd en feil, så bør systemansvarlig gies beskjed slik at logiken kan rettes på
-                Write-Host "Det har skjedd en feil, informer presonen som vedlikeholder skriptet om dette," $rettigheterSomKanMistes[[int]$valg] "ble forsøkt valg, og finnes ikke" -ForegroundColor Red
+                # Det skal ikke være mulig å havne her, men skulle det ha skjedd en feil, så bør systemansvarlig gis beskjed slik at logikken kan rettes på
+                Write-Host "Det har skjedd en feil, informer personen som vedlikeholder skriptet om dette," $rettigheterSomKanMistes[[int]$valg] "ble forsøkt valg, og finnes ikke" -ForegroundColor Red
             }
         }
     }
@@ -847,12 +847,12 @@ function Remove-Rettigheter() {
 
     # Fjerner tidligere utskrift for å gjøre konsollvinduet oversiktlig
     Clear-Host
-    # Gir beksjed om at rettighetene ser ut til å ha blitt gjernet, og lister ut de rettighetene brukeren fortsatt har til kontoen
-    Write-Host "Rettigheter er blitt fjernet, rettighetene $bruker forsatt har til kontoen $konto :" -ForegroundColor Green
+    # Gir beskjed om at rettighetene ser ut til å ha blitt fjernet, og lister ut de rettighetene brukeren fortsatt har til kontoen
+    Write-Host "Rettigheter er blitt fjernet, rettighetene $bruker fortsatt har til kontoen $konto :" -ForegroundColor Green
     foreach($rettighet in $rettigheterSomKanMistes) {
         Write-Host "    - $rettighet"
     }
-    # Pauser før funksjonen avlsuttes, slik at brukeren rekker å lese utskriften
+    # Pauser før funksjonen avsluttes, slik at brukeren rekker å lese utskriften
     Pause
     Clear-Host
 }
@@ -862,11 +862,11 @@ function Add-BrukerRettighetTilDeltPostboks() {
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
     Clear-Host
     # Får tak i aliaset til brukeren som skal få rettigheter
-    $bruker = Get-Epostkonto "Skriv inn navnet på brukeren som skal få rettigheter til en annen konto (brukeren må ha en e-postkonto aktivert)"
+    $bruker = Get-Epostkonto "Skriv inn navnet på brukeren som skal få rettigheter til en annen konto (brukeren må ha en epostkonto aktivert)"
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
     Cleat-Host
     # Får tak i aliaset til kontoen brukeren skal få rettigheter til
-    $konto = Get-DeltPostboks "Skriv inn aliaset på den delte kontoen $bruker skal få rettighetheter til"
+    $konto = Get-DeltPostboks "Skriv inn aliaset på den delte kontoen $bruker skal få rettigheter til"
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
     Clear-Host
     
@@ -897,21 +897,21 @@ function Add-KontoTilKontaktliste() {
     Clear-Host
 }
 
- # Denne funskjonen returnerer aliaset til en delt postboks
+ # Denne funksjonen returnerer aliaset til en delt postboks
 function Get-DeltPostboks() {
     # Tar inn en string som beskriver hvilken konto programvaren spør etter
     param([string]$spoereTekst)
 
-    # Oppretter de variablene som skal brukes senre i koden
+    # Oppretter de variablene  som skal brukes senere i koden
     $konto = ""
     $oenskerAaFortsette = "n"
     $riktigKonto = ""
 
     # Denne do while løkken kjører så lenge brukeren ikke gir beskjed om at det var riktig konto koden fant
     do {
-        # Denne do while løkken kjører så lenge kontoen ikke er funnet, eller brukeren ikke lengre ønsker å forsåke å finne en konto
+        # Denne do while løkken kjører så lenge kontoen ikke er funnet, eller brukeren ikke lengre ønsker å forsøke å finne en konto
         do {
-            # Denne variablen teller hvor mange ganger brukeren har forsøkt å finne en konto, men ikke lykkes
+            # Denne variabelen teller hvor mange ganger brukeren har forsøkt å finne en konto, men ikke lykkes
             $count = 0
             do{
                 # Skriver ut stringen som beskriver hva slags konto det letes etter
@@ -919,7 +919,7 @@ function Get-DeltPostboks() {
                 # Ber brukeren skrive inn noe som kan identifisere kontoen det spørres etter
                 $entydig = Read-Host "Skriv inn et entydig alias på det du skal finne"
 
-                # Tester om det ble skret inn noe som kan brukes for å finne en konto
+                # Tester om det ble skrevet inn noe som kan brukes for å finne en konto
                 if($entydig -eq "") {
                     # Gir beskjed om at det må skrives inne noe før enter trykkes
                     Write-Host "Du må skrive inn noe før du trykker enter" -ForegroundColor Red
@@ -937,11 +937,11 @@ function Get-DeltPostboks() {
             # Sjekker om det er funnet en konto, og at det er gjort færre enn 5 forsøk siden sist bruker ble spurt om brukeren ønsket å ikke gjøre flere forsøk
             } while(($konto -eq "" -or $entydig -eq "") -and $count -lt 5)
 
-            # Sjekker om det er funnet en konto, hvis ikke blir brukeren spurt om brukeren ønsker å gi seg, hvis brukeren øsnker å gi seg, så avluttes søket, og hovedmenyen lastes
+            # Sjekker om det er funnet en konto, hvis ikke blir brukeren spurt om brukeren ønsker å gi seg, hvis brukeren ønsker å gi seg, så avsluttes søket, og hovedmenyen lastes
             if($konto -eq "") {
-                # Brukeren blir spurt om han øsnker å gi seg
-                $oenskerAaFortsette = (Read-Host "Du ser ut til å ha gjort noen forsøk uten å lykkes, ønsker du å forsette? [y/n]").ToLower().Trim()
-                # Hvis brukeren øsnker å gi seg, så returnerer koden til hovedmenyen
+                # Brukeren blir spurt om han ønsker å gi seg
+                $oenskerAaFortsette = (Read-Host "Du ser ut til å ha gjort noen forsøk uten å lykkes, ønsker du å fortsette? [y/n]").ToLower().Trim()
+                # Hvis brukeren ønsker å gi seg, så returnerer koden til hovedmenyen
                 if ($oenskerAaFortsette -ne "y") {
                     Break fortsettAdministrering
                 }
@@ -963,21 +963,21 @@ function Get-DeltPostboks() {
     return $konto
 }
 
-# Denne funskjonen returnerer navnet til en kontaktliste
+# Denne funksjonen returnerer navnet til en kontaktliste
 function Get-Kontaktliste() {
     # Tar inn en string som beskriver hvilken liste programvaren spør etter
     param([string]$spoereTekst)
 
-    # Oppretter de variablene som skal brukes senre i koden
+    # Oppretter de variablene  som skal brukes senere i koden
     $liste = ""
     $oenskerAaFortsette = "n"
     $riktigListe = ""
 
     # Denne do while løkken kjører så lenge brukeren ikke gir beskjed om at det var riktig liste koden fant
     do {
-        # Denne do while løkken kjører så lenge listen ikke er funnet, eller brukeren ikke lengre ønsker å forsåke å finne en liste
+        # Denne do while løkken kjører så lenge listen ikke er funnet, eller brukeren ikke lengre ønsker å forsøke å finne en liste
         do {
-            # Denne variablen teller hvor mange ganger brukeren har forsøkt å finne en liste, men ikke lykkes
+            # Denne variabelen teller hvor mange ganger brukeren har forsøkt å finne en liste, men ikke lykkes
             $count = 0
             do{
                 # Skriver ut stringen som beskriver hva slags liste det letes etter
@@ -985,7 +985,7 @@ function Get-Kontaktliste() {
                 # Ber brukeren skrive inn noe som kan identifisere listen det spørres etter
                 $entydig = Read-Host "Skriv inn et entydig navn på det du skal finne"
 
-                # Tester om det ble skret inn noe som kan brukes for å finne en liste
+                # Tester om det ble skrevet inn noe som kan brukes for å finne en liste
                 if($entydig -eq "") {
                     # Gir beskjed om at det må skrives inne noe før enter trykkes
                     Write-Host "Du må skrive inn noe før du trykker enter" -ForegroundColor Red
@@ -1004,11 +1004,11 @@ function Get-Kontaktliste() {
             # Sjekker om det er funnet en liste, og at det er gjort færre enn 5 forsøk siden sist bruker ble spurt om brukeren ønsket å ikke gjøre flere forsøk
             } while(($liste -eq "" -or $entydig -eq "") -and $count -lt 5)
 
-            # Sjekker om det er funnet en liste, hvis ikke blir brukeren spurt om brukeren ønsker å gi seg, hvis brukeren øsnker å gi seg, så avluttes søket, og hovedmenyen lastes
+            # Sjekker om det er funnet en liste, hvis ikke blir brukeren spurt om brukeren ønsker å gi seg, hvis brukeren ønsker å gi seg, så avsluttes søket, og hovedmenyen lastes
             if($liste -eq "") {
-                # Brukeren blir spurt om han øsnker å gi seg
-                $oenskerAaFortsette = (Read-Host "Du ser ut til å ha gjort noen forsøk uten å lykkes, ønsker du å forsette? [y/n]").ToLower().Trim()
-                # Hvis brukeren øsnker å gi seg, så returnerer koden til hovedmenyen
+                # Brukeren blir spurt om han ønsker å gi seg
+                $oenskerAaFortsette = (Read-Host "Du ser ut til å ha gjort noen forsøk uten å lykkes, ønsker du å fortsette? [y/n]").ToLower().Trim()
+                # Hvis brukeren ønsker å gi seg, så returnerer koden til hovedmenyen
                 if ($oenskerAaFortsette -ne "y") {
                     Break fortsettAdministrering
                 }
@@ -1038,7 +1038,7 @@ function Remove-BrukerFraKontaktliste() {
     $bruker = Get-Epostkonto "Skriv inn aliaset på brukeren som skal fjernes fra en liste"
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
     Clear-Host
-    # Henter listen som bruker skal fjenes fra
+    # Henter listen som bruker skal fjernes fra
     $liste = Get-Kontaktliste "Skriv inn aliaset til listen $bruker skal fjernes fra"
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
     Clear-Host
@@ -1046,7 +1046,7 @@ function Remove-BrukerFraKontaktliste() {
     # Fjerner bruker fra liste
     Remove-DistributionGroupMember -Identity $liste -Member $bruker
 
-    # Sjekker om bruker er medlem i kontktlisten    
+    # Sjekker om bruker er medlem i kontaktlisten    
     if((Get-DistributionGroupMember -identity $liste -ErrorAction SilentlyContinue | Where {$_.Alias -eq $bruker}) -eq $null){
         # Skriver ut en beskjed om at brukeren nå fjernet fra listen
         Write-Host "`n$bruker er ikke lengre en del av $liste" -ForegroundColor Green
@@ -1059,16 +1059,16 @@ function Remove-BrukerFraKontaktliste() {
     Clear-Host
 }
 
-# Funksjonen fjerner rettiheter en bruker har til en delt postboks
+# Funksjonen fjerner rettigheter en bruker har til en delt postboks
 function Remove-BrukerRettighetFraDeltPostboks() {
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
     Clear-Host
     # Får tak i aliaset til brukeren som skal miste rettigheter
-    $bruker = Get-Epostkonto "Skriv inn navnet på brukeren som skal få rettigheter til en annen konto (brukeren må ha en e-postkonto aktivert)"
+    $bruker = Get-Epostkonto "Skriv inn navnet på brukeren som skal få rettigheter til en annen konto (brukeren må ha en epostkonto aktivert)"
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
     Cleat-Host
     # Får tak i aliaset til kontoen brukeren skal miste rettigheter til
-    $konto = Get-DeltPostboks "Skriv inn aliaset på den delte kontoen $bruker skal få rettighetheter til"
+    $konto = Get-DeltPostboks "Skriv inn aliaset på den delte kontoen $bruker skal få rettigheter til"
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
     Clear-Host
     
@@ -1092,7 +1092,7 @@ function List-DeltPostboks() {
     Clear-Host
 }
 
-# Lister ut medlemene i en kontaktliste/distribusjonsgruppe
+# Lister ut medlemmene i en kontaktliste/distribusjonsgruppe
 function List-KontaktlisteMedlemmer() {
     # Fjerner innholdet i konsollen, for at det skal se ryddigere ut
     Clear-Host
@@ -1100,7 +1100,7 @@ function List-KontaktlisteMedlemmer() {
     # Fjerner innholdet i konsollen, for at det skal se ryddigere ut
     Clear-Host
 
-    # Skriver ut listen med medlemer
+    # Skriver ut listen med medlemmer
     Write-Host "Medlemmer I $Liste :"
     Get-DistributionGroupMember -identity $liste | Select Name,Alias | Format-Table -AutoSize -Wrap
 
@@ -1144,7 +1144,7 @@ function Remove-Kontaktliste{
     #Sletter en kontaktliste, legger utskriften i en variabel, slik at vi har kontroll på hva som blir skrevet ut
     $enVariabel = Remove-DistributionGroup $navn
     
-    #Tester om gruppen fortsatt eksisterer, når scriptblock'en kjøres, så returnes $null hvis alt har gått som det skal
+    #Tester om gruppen fortsatt eksisterer, når scriptblock'en kjøres, så returneres $null hvis alt har gått som det skal
     $scriptblock = [scriptblock]::Create("Get-DistributionGroup -Filter {name -eq `"$navn`"}")
     $eksistererGruppen = Invoke-Command -ScriptBlock $scriptblock
 
@@ -1272,7 +1272,7 @@ function Add-RettigheterTilPostboks($navn,$bruker){
     } 
 }
 
-#Funsksjonen setter mulighet for en bruker å sende på vegne av en annen 
+# Funksjonen setter mulighet for en bruker å sende på vegne av en annen 
 function Add-SendPaVegneAv($navn, $bruker){  
     Set-Mailbox $navn -GrantSendOnBehalfTo $bruker -ErrorVariable err  
 #Hvis en ikke får feilmelding vil en få en utskrift som sier at operasjonen er vellykket. 
@@ -1365,7 +1365,7 @@ function Get-OU{
     return $OU
 }
 
-#Funksjonen oppretter en ny delt epost 
+# Funksjonen oppretter en ny delt epost 
 function New-DeltPostboks{ 
     Write-Host "Opprett deltpostboks" 
      
@@ -1393,7 +1393,7 @@ function New-DeltPostboks{
     }
 }
 
-#Oppretter en ny kontaktliste 
+# Oppretter en ny kontaktliste 
 function New-Kontaktliste{
 
     $sjekkNavn = $null
@@ -1420,7 +1420,7 @@ function New-Kontaktliste{
                 $sjekkNavn = Invoke-Command -ScriptBlock $scriptblock
             } 
         } 
-        #Opretter en ny kontaktliste, legger utskriften i en variabel, slik at vi har kontroll på hva som blir skrevet ut
+        # Oppretter en ny kontaktliste, legger utskriften i en variabel, slik at vi har kontroll på hva som blir skrevet ut
         $enVariabel = New-DistributionGroup -Name $navn -Type Distribution
         
         $scriptblock = [scriptblock]::Create("Get-DistributionGroup -Filter {name -eq `"$navn`"}")
@@ -1435,7 +1435,7 @@ function New-Kontaktliste{
     }
 }
 
-#Oppretter en ny postboks
+# Oppretter en ny postboks
 function New-Postboks{
     $fornavn = Read-Host "Hva er fornavnet til brukeren?"
     #sjekker om lengden på fornavn er lengre enn 2
@@ -1556,7 +1556,7 @@ function Set-Brukernavn($fornavn, $etternavn) {
     $navn = Format-Brukernavn($brukernavn)
     $MidlertidigBrukernavn = $navn
     do{
-        #Sjekker om brukernavnet er i bruk. Hvis brukernavn ikke finnes er resultatet $null, lager en scriptblock for at variablen $MidlertidigBrukernavn skal valideres før den sendes som et parameter inni en scriptblock 
+        #Sjekker om brukernavnet er i bruk. Hvis brukernavn ikke finnes er resultatet $null, lager en scriptblock for at variabelen $MidlertidigBrukernavn skal valideres før den sendes som et parameter inni en scriptblock 
         $scriptblock = [scriptblock]::Create("Get-ADUser -Filter {SamAccountName -eq `"$MidlertidigBrukernavn`"}")
         $finnes = Invoke-Command -ScriptBlock $scriptblock
         #Hvis $finnes er lik $null
@@ -1709,26 +1709,26 @@ function Test-PostboksNavn{
 
 function Get-Hovedmeny() {
     
-    # Paramterene, $fremtidsvalg inneholder valg som skal gjøres, mens $valgGjort inneholder en historikk, begge to er stringer som inneholder tall, adskilt med komma
-    # Disse to parameterene brukes for å kunne tilby tilbake valget i menyen
+    # Parameterne, $fremtidsvalg inneholder valg som skal gjøres, mens $valgGjort inneholder en historikk, begge to er stringer som inneholder tall, adskilt med komma
+    # Disse to parameterne brukes for å kunne tilby tilbake valget i menyen
     param([string]$fremtidigeValg,[string]$valgGjort)
 
     # Fjerner tidligere utskrift fra konsollen, slik at brukeren får en ryddig meny
     Clear-Host
 
-    # Boolsk verdi som brukes for å kontrollere at parameterene som er gitt, kunn inneholder tall, adskilt med komma
+    # Boolsk verdi som brukes for å kontrollere at parameterne som er gitt, kunn inneholder tall, adskilt med komma
     [bool]$isRetteParametere = $true
     
     # Dette er en array som inneholder teksten på de forskjellige menyvalgene
     $menyElementer = @("Brukermeny","Delt postboksmeny","Kontaktliste meny","Avslutt")
 
-    # Dette er variablen som brukes for å lagre menyvalget brukeren gjør
+    # Dette er variabelen som brukes for å lagre menyvalget brukeren gjør
     [int]$valg = 0
 
-    # Dette er variablen som brukes for å lagre valgene som skal gjøres i neste nivå av menyene
+    # Dette er variabelen som brukes for å lagre valgene som skal gjøres i neste nivå av menyene
     $fremtidigeMenyValg = @()
 
-    # Disse to variablene inneholder de to tilsendte variablene, men konveterer dem fra stringer til arrays for å gjøre dem enkelere å jobbe med
+    # Disse to variablene  inneholder de to tilsendte variablene , men konveterer dem fra stringer til arrays for å gjøre dem enkelere å jobbe med
     $fremtidigeValgSplittet = $fremtidigeValg -split ","
     $valgGjortSplittet = $valgGjort -split ","
 
@@ -1749,16 +1749,16 @@ function Get-Hovedmeny() {
 
     # Hvis et element i $valgGjortSplittet eller $fremtidigeValtSplittet ikke er et tall, så vil koden videre gå utifra at det ikke er sendt ved noen paramentere til menyen, og det skrives ut en advarsel om dette
     if(!$isRetteParametere) {
-        #Parameterene "nullstilles"
+        #parameterne "nullstilles"
         $fremtidigeValg = ""
         $valgGjort = ""
         
         #det skrives ut en advarsel, og programmet settes på pause, slik at brukeren får anledning til å lese feilmeldingen før den viskes vekk av en CLear-Host senere i skriptet
-        Write-Host "Parameterene som ble gitt, var ikke 0-2 stringer bestående av tall, adskilt med komma.`nGår videre som om det ikke ble gitt noen parametere" -ForegroundColor Red
+        Write-Host "parameterne som ble gitt, var ikke 0-2 stringer bestående av tall, adskilt med komma.`nGår videre som om det ikke ble gitt noen parametere" -ForegroundColor Red
         Pause
     }
 
-    # Denne ifsettnigen sjekket om det er sendt ved en liste med valg som skal gjøres, hvis listen er tom, så spør den brukeren om hvilket valg som skal gjøres
+    # Denne ifsetningen sjekket om det er sendt ved en liste med valg som skal gjøres, hvis listen er tom, så spør den brukeren om hvilket valg som skal gjøres
     # Hvis listen med valg som skal gjøres ikke er tom, hentes valget ut fra listen, og fjernes fra listen
     if ($fremtidigeValg.Length -eq 0) {
         # spør brukeren som hvilket valg som skal bli gjort
@@ -1770,7 +1770,7 @@ function Get-Hovedmeny() {
         # Henter ut valget som skal gjøres
         $valg = [int]$fremtidigeMenyValg[0]
         
-        # I denne ifsettnigen fjernes valget som er gjort, og resten av arrayen gjøres om til en string som kan sendes videre,
+        # I denne ifsetningen fjernes valget som er gjort, og resten av arrayen gjøres om til en string som kan sendes videre,
         # hvis arrayen kun inneholder et element, så gjøres stringen som skal sendes videre om til en tom string
         if($fremtidigeMenyValg.Count -gt 1) {
             
@@ -1847,26 +1847,26 @@ function Get-Hovedmeny() {
 
 function Get-BrukerMeny() {
     
-    # Paramterene, $fremtidsvalg inneholder valg som skal gjøres, mens $valgGjort inneholder en historikk, begge to er stringer som inneholder tall, adskilt med komma
-    # Disse to parameterene brukes for å kunne tilby tilbake valget i menyen
+    # Parameterne, $fremtidsvalg inneholder valg som skal gjøres, mens $valgGjort inneholder en historikk, begge to er stringer som inneholder tall, adskilt med komma
+    # Disse to parameterne brukes for å kunne tilby tilbake valget i menyen
     param([string]$fremtidigeValg,[string]$valgGjort)
 
     # Fjerner tidligere utskrift fra konsollen, slik at brukeren får en ryddig meny
     Clear-Host
 
-    # Boolsk verdi som brukes for å kontrollere at parameterene som er gitt, kunn inneholder tall, adskilt med komma
+    # Boolsk verdi som brukes for å kontrollere at parameterne som er gitt, kunn inneholder tall, adskilt med komma
     [bool]$isRetteParametere = $true
     
     # Dette er en array som inneholder teksten på de forskjellige menyvalgene
-    $menyElementer = @("Legg til bruker","Legg til bruker(e) fra CVS fil","Legg rettighet til brukerkonto","Fjern rettighet til brukerkonto","Slett e-postkonto","Slett domenebruker","Tilbake","Til hovedmeny", "Avslutt")
+    $menyElementer = @("Legg til bruker","Legg til bruker(e) fra CVS fil","Legg rettighet til brukerkonto","Fjern rettighet til brukerkonto","Slett epostkonto","Slett domenebruker","Tilbake","Til hovedmeny", "Avslutt")
 
-    # Dette er variablen som brukes for å lagre menyvalget brukeren gjør
+    # Dette er variabelen som brukes for å lagre menyvalget brukeren gjør
     [int]$valg = 0
 
-    # Dette er variablen som brukes for å lagre valgene som skal gjøres i neste nivå av menyene
+    # Dette er variabelen som brukes for å lagre valgene som skal gjøres i neste nivå av menyene
     $fremtidigeMenyValg = @()
 
-    # Disse to variablene inneholder de to tilsendte variablene, men konveterer dem fra stringer til arrays for å gjøre dem enkelere å jobbe med
+    # Disse to variablene  inneholder de to tilsendte variablene , men konveterer dem fra stringer til arrays for å gjøre dem enkelere å jobbe med
     $fremtidigeValgSplittet = $fremtidigeValg -split ","
     $valgGjortSplittet = $valgGjort -split ","
 
@@ -1886,16 +1886,16 @@ function Get-BrukerMeny() {
 
     # Hvis et element i $valgGjortSplittet eller $fremtidigeValtSplittet ikke er et tall, så vil koden videre gå utifra at det ikke er sendt ved noen paramentere til menyen, og det skrives ut en advarsel om dette
     if(!$isRetteParametere) {
-        #Parameterene "nullstilles"
+        #parameterne "nullstilles"
         $fremtidigeValg = ""
         $valgGjort = ""
         
         #det skrives ut en advarsel, og programmet settes på pause, slik at brukeren får anledning til å lese feilmeldingen før den viskes vekk av en CLear-Host senere i skriptet
-        Write-Host "Parameterene som ble gitt, var ikke 0-2 stringer bestående av tall, adskilt med komma.`nGår videre som om det ikke ble gitt noen parametere" -ForegroundColor Red
+        Write-Host "parameterne som ble gitt, var ikke 0-2 stringer bestående av tall, adskilt med komma.`nGår videre som om det ikke ble gitt noen parametere" -ForegroundColor Red
         Pause
     }
 
-    # Denne ifsettnigen sjekket om det er sendt ved en liste med valg som skal gjøres, hvis listen er tom, så spør den brukeren om hvilket valg som skal gjøres
+    # Denne ifsetningen sjekket om det er sendt ved en liste med valg som skal gjøres, hvis listen er tom, så spør den brukeren om hvilket valg som skal gjøres
     # Hvis listen med valg som skal gjøres ikke er tom, hentes valget ut fra listen, og fjernes fra listen
     if ($fremtidigeValg.Length -eq 0) {
         # spør brukeren som hvilket valg som skal bli gjort
@@ -1907,7 +1907,7 @@ function Get-BrukerMeny() {
         # Henter ut valget som skal gjøres
         $valg = [int]$fremtidigeMenyValg[0]
         
-        # I denne ifsettnigen fjernes valget som er gjort, og resten av arrayen gjøres om til en string som kan sendes videre,
+        # I denne ifsetningen fjernes valget som er gjort, og resten av arrayen gjøres om til en string som kan sendes videre,
         # hvis arrayen kun inneholder et element, så gjøres stringen som skal sendes videre om til en tom string
         if($fremtidigeMenyValg.Count -gt 1) {
             
@@ -2045,26 +2045,26 @@ function Get-BrukerMeny() {
 
 function Get-DeltPostboksMeny() {
     
-    # Paramterene, $fremtidsvalg inneholder valg som skal gjøres, mens $valgGjort inneholder en historikk, begge to er stringer som inneholder tall, adskilt med komma
-    # Disse to parameterene brukes for å kunne tilby tilbake valget i menyen
+    # Parameterne, $fremtidsvalg inneholder valg som skal gjøres, mens $valgGjort inneholder en historikk, begge to er stringer som inneholder tall, adskilt med komma
+    # Disse to parameterne brukes for å kunne tilby tilbake valget i menyen
     param([string]$fremtidigeValg,[string]$valgGjort)
 
     # Fjerner tidligere utskrift fra konsollen, slik at brukeren får en ryddig meny
     Clear-Host
 
-    # Boolsk verdi som brukes for å kontrollere at parameterene som er gitt, kunn inneholder tall, adskilt med komma
+    # Boolsk verdi som brukes for å kontrollere at parameterne som er gitt, kunn inneholder tall, adskilt med komma
     [bool]$isRetteParametere = $true
     
     # Dette er en array som inneholder teksten på de forskjellige menyvalgene
     $menyElementer = @("Opprett delt postpoks","Legg til rettigheter til delt postboks","Fjern rettigheter til delt postboks","Slett delt postboks","List delte postbokser","Tilbake","Til hovedmeny", "Avslutt")
 
-    # Dette er variablen som brukes for å lagre menyvalget brukeren gjør
+    # Dette er variabelen som brukes for å lagre menyvalget brukeren gjør
     [int]$valg = 0
 
-    # Dette er variablen som brukes for å lagre valgene som skal gjøres i neste nivå av menyene
+    # Dette er variabelen som brukes for å lagre valgene som skal gjøres i neste nivå av menyene
     $fremtidigeMenyValg = @()
 
-    # Disse to variablene inneholder de to tilsendte variablene, men konveterer dem fra stringer til arrays for å gjøre dem enkelere å jobbe med
+    # Disse to variablene  inneholder de to tilsendte variablene , men konveterer dem fra stringer til arrays for å gjøre dem enkelere å jobbe med
     $fremtidigeValgSplittet = $fremtidigeValg -split ","
     $valgGjortSplittet = $valgGjort -split ","
 
@@ -2085,16 +2085,16 @@ function Get-DeltPostboksMeny() {
 
     # Hvis et element i $valgGjortSplittet eller $fremtidigeValtSplittet ikke er et tall, så vil koden videre gå utifra at det ikke er sendt ved noen paramentere til menyen, og det skrives ut en advarsel om dette
     if(!$isRetteParametere) {
-        #Parameterene "nullstilles"
+        #parameterne "nullstilles"
         $fremtidigeValg = ""
         $valgGjort = ""
         
         #det skrives ut en advarsel, og programmet settes på pause, slik at brukeren får anledning til å lese feilmeldingen før den viskes vekk av en CLear-Host senere i skriptet
-        Write-Host "Parameterene som ble gitt, var ikke 0-2 stringer bestående av tall, adskilt med komma.`nGår videre som om det ikke ble gitt noen parametere" -ForegroundColor Red
+        Write-Host "parameterne som ble gitt, var ikke 0-2 stringer bestående av tall, adskilt med komma.`nGår videre som om det ikke ble gitt noen parametere" -ForegroundColor Red
         Pause
     }
 
-    # Denne ifsettnigen sjekket om det er sendt ved en liste med valg som skal gjøres, hvis listen er tom, så spør den brukeren om hvilket valg som skal gjøres
+    # Denne ifsetningen sjekket om det er sendt ved en liste med valg som skal gjøres, hvis listen er tom, så spør den brukeren om hvilket valg som skal gjøres
     # Hvis listen med valg som skal gjøres ikke er tom, hentes valget ut fra listen, og fjernes fra listen
     if ($fremtidigeValg.Length -eq 0) {
         # spør brukeren som hvilket valg som skal bli gjort
@@ -2106,7 +2106,7 @@ function Get-DeltPostboksMeny() {
         # Henter ut valget som skal gjøres
         $valg = [int]$fremtidigeMenyValg[0]
         
-        # I denne ifsettnigen fjernes valget som er gjort, og resten av arrayen gjøres om til en string som kan sendes videre,
+        # I denne ifsetningen fjernes valget som er gjort, og resten av arrayen gjøres om til en string som kan sendes videre,
         # hvis arrayen kun inneholder et element, så gjøres stringen som skal sendes videre om til en tom string
         if($fremtidigeMenyValg.Count -gt 1) {
             
@@ -2240,26 +2240,26 @@ function Get-DeltPostboksMeny() {
 
 function Get-KontaktListeMeny() {
     
-    # Paramterene, $fremtidsvalg inneholder valg som skal gjøres, mens $valgGjort inneholder en historikk, begge to er stringer som inneholder tall, adskilt med komma
-    # Disse to parameterene brukes for å kunne tilby tilbake valget i menyen
+    # Parameterne, $fremtidsvalg inneholder valg som skal gjøres, mens $valgGjort inneholder en historikk, begge to er stringer som inneholder tall, adskilt med komma
+    # Disse to parameterne brukes for å kunne tilby tilbake valget i menyen
     param([string]$fremtidigeValg,[string]$valgGjort)
 
     # Fjerner tidligere utskrift fra konsollen, slik at brukeren får en ryddig meny
     Clear-Host
 
-    # Boolsk verdi som brukes for å kontrollere at parameterene som er gitt, kunn inneholder tall, adskilt med komma
+    # Boolsk verdi som brukes for å kontrollere at parameterne som er gitt, kunn inneholder tall, adskilt med komma
     [bool]$isRetteParametere = $true
     
     # Dette er en array som inneholder teksten på de forskjellige menyvalgene
     $menyElementer = @("Ny kontaktliste/distribuertgruppe","Legg til bruker i kontaktliste","Fjern bruker fra kontaktliste","Slett kontaktliste","List medlemer i kontaktliste","Tilbake","Til hovedmeny", "Avslutt")
 
-    # Dette er variablen som brukes for å lagre menyvalget brukeren gjør
+    # Dette er variabelen som brukes for å lagre menyvalget brukeren gjør
     [int]$valg = 0
 
-    # Dette er variablen som brukes for å lagre valgene som skal gjøres i neste nivå av menyene
+    # Dette er variabelen som brukes for å lagre valgene som skal gjøres i neste nivå av menyene
     $fremtidigeMenyValg = @()
 
-    # Disse to variablene inneholder de to tilsendte variablene, men konveterer dem fra stringer til arrays for å gjøre dem enkelere å jobbe med
+    # Disse to variablene  inneholder de to tilsendte variablene , men konveterer dem fra stringer til arrays for å gjøre dem enkelere å jobbe med
     $fremtidigeValgSplittet = $fremtidigeValg -split ","
     $valgGjortSplittet = $valgGjort -split ","
 
@@ -2280,16 +2280,16 @@ function Get-KontaktListeMeny() {
 
     # Hvis et element i $valgGjortSplittet eller $fremtidigeValtSplittet ikke er et tall, så vil koden videre gå utifra at det ikke er sendt ved noen paramentere til menyen, og det skrives ut en advarsel om dette
     if(!$isRetteParametere) {
-        #Parameterene "nullstilles"
+        #parameterne "nullstilles"
         $fremtidigeValg = ""
         $valgGjort = ""
         
         #det skrives ut en advarsel, og programmet settes på pause, slik at brukeren får anledning til å lese feilmeldingen før den viskes vekk av en CLear-Host senere i skriptet
-        Write-Host "Parameterene som ble gitt, var ikke 0-2 stringer bestående av tall, adskilt med komma.`nGår videre som om det ikke ble gitt noen parametere" -ForegroundColor Red
+        Write-Host "parameterne som ble gitt, var ikke 0-2 stringer bestående av tall, adskilt med komma.`nGår videre som om det ikke ble gitt noen parametere" -ForegroundColor Red
         Pause
     }
 
-    # Denne ifsettnigen sjekket om det er sendt ved en liste med valg som skal gjøres, hvis listen er tom, så spør den brukeren om hvilket valg som skal gjøres
+    # Denne ifsetningen sjekket om det er sendt ved en liste med valg som skal gjøres, hvis listen er tom, så spør den brukeren om hvilket valg som skal gjøres
     # Hvis listen med valg som skal gjøres ikke er tom, hentes valget ut fra listen, og fjernes fra listen
     if ($fremtidigeValg.Length -eq 0) {
         # spør brukeren som hvilket valg som skal bli gjort
@@ -2301,7 +2301,7 @@ function Get-KontaktListeMeny() {
         # Henter ut valget som skal gjøres
         $valg = [int]$fremtidigeMenyValg[0]
         
-        # I denne ifsettnigen fjernes valget som er gjort, og resten av arrayen gjøres om til en string som kan sendes videre,
+        # I denne ifsetningen fjernes valget som er gjort, og resten av arrayen gjøres om til en string som kan sendes videre,
         # hvis arrayen kun inneholder et element, så gjøres stringen som skal sendes videre om til en tom string
         if($fremtidigeMenyValg.Count -gt 1) {
             
