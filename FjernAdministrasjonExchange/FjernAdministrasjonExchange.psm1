@@ -864,7 +864,7 @@ function Add-BrukerRettighetTilDeltPostboks() {
     # Får tak i aliaset til brukeren som skal få rettigheter
     $bruker = Get-Epostkonto "Skriv inn navnet på brukeren som skal få rettigheter til en annen konto (brukeren må ha en epostkonto aktivert)"
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
-    Cleat-Host
+    Clear-Host
     # Får tak i aliaset til kontoen brukeren skal få rettigheter til
     $konto = Get-DeltPostboks "Skriv inn aliaset på den delte kontoen $bruker skal få rettigheter til"
     # Fjerner annen utskrift fra konsollen for å gjøre den mer oversiktlig
